@@ -23,7 +23,7 @@ dict_concised.json: $(wildcard 原始資料/dict_concised*.xlsx)
 
 dict_idioms.json: $(wildcard 原始資料/dict_idioms*.xls)
 	libreoffice "--infilter=CSV:44,34,76,1" --convert-to csv --outdir "原始資料" $<
-	npx csvtojson $(patsubst %.xls,%.csv,$<) --noheader=false --headers='["id","title","bopomofo","pinyin","definition","source_name","source_content","source_comment","source_reference","典故說明","用法語意說明","用法使用類別","用法例句","書證","辨識同","辨識異","辨識例句","形音辨誤","近義同","近義反","參考成語(正文)"]' > "$@"
+	npx csvtojson $(patsubst %.xls,%.csv,$<) --noheader=false --headers='["id","title","bopomofo","pinyin","definition","source_name","source_content","source_comment","source_reference","典故說明","用法語意說明","用法使用類別","用法例句","書證","辨識同","辨識異","辨識例句","形音辨誤","近義同","近義反","word_ref"]' > "$@"
 
 dict_mini.json: $(wildcard 原始資料/dict_mini*.xlsx)
 	libreoffice "--infilter=CSV:44,34,76,1" --convert-to csv --outdir "原始資料" $<

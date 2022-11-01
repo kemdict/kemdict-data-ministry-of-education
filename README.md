@@ -153,7 +153,7 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 |形音辨誤|形音辨誤|
 |近義-同|近義同|
 |近義-反|近義反|
-|參考成語(正文)|參考成語(正文)|
+|參考成語(正文)|word_ref|
 
 ### `dict_mini.json`
 
