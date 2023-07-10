@@ -1,0 +1,1 @@
+(depends-on "set" :git "https://github.com/kisaragi-hiu/set.el")

@@ -12,14 +12,17 @@
 
 原始資料在`./原始資料`這個資料夾下，五個 JSON 檔案是以下流程生成的檔案。
 
-## 轉檔流程
+## Updating
+
 - 安裝 Node、npm、LibreOffice
 - `npm install`
 - 從[教育部國語辭典公眾授權網](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html)閱讀使用說明及授權後下載原始檔案（`.xlsx` 或 `.xls`），放在`原始資料/`這個資料夾裡。
   - 臺灣客家語常用詞辭典的下載在[它的著作權說明](https://hakkadict.moe.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=ChLpKc/description?id=MSA00000041&opt=opt2)有提到，在訊息公告有。
-- `make all`
+- 刪除原有的檔案之後 `make all`
 
 如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
+
+更新完之後用 `diff/do.el` 分析新版本所新增和移除的詞。
 
 ## License
 
