@@ -2,16 +2,12 @@
 
 (require 'set)
 
-(progn
-  (d:generate-diff "dict_revised"
-    :old-commit "a327b48"
-    :new-commit "1d7c5b5"
-    :old-version "2015_20230106"
-    :new-version "2015_20230626")
-  (k/send-notification "Done"))
-
 (cl-defun d:generate-diff (dict &key old-commit new-commit old-version new-version)
-  "Generate diff for DICT."
+  "Generate diff for DICT.
+This asks Git to generate a diff between OLD-COMMIT and NEW-COMMIT.
+
+The output file is named
+  \"DICT - <OLD-COMMIT>-<NEW-COMMIT> - {added|removed}.json\"."
   (declare (indent 1))
   (let ((removed (set-new))
         (added (set-new))
@@ -37,13 +33,13 @@
               (throw 'continue nil))
             (let ((flag (char-after))
                   title)
-              (search-forward "{")
-              (forward-char -1)
-              ;; (message "%s" (line-number-at-pos))
-              (setq title (gethash "title" (json-parse-buffer)))
-              (if (eql flag ?-)
-                  (set-add removed title)
-                (set-add added title)))))))
+              (when (search-forward "{" nil t)
+                (forward-char -1)
+                ;; (message "%s" (line-number-at-pos))
+                (setq title (gethash "title" (json-parse-buffer)))
+                (if (eql flag ?-)
+                    (set-add removed title)
+                  (set-add added title))))))))
     ;; (with-temp-file (format "%s - %s-%s - modified.json" dict old-version new-version)
     ;;   (insert
     ;;    (json-serialize (seq-into (seq-intersection added removed) 'vector))))
@@ -53,3 +49,16 @@
     (with-temp-file (format "%s - %s-%s - removed.json" dict old-version new-version)
       (insert
        (json-serialize (seq-into (seq-difference removed added) 'vector))))))
+
+(progn
+  (pcase-dolist (`(,dict ,old-version ,new-version)
+                 '(("dict_concised" "2014_20230628" "2014_20230926")
+                   ("dict_idioms" "2020_20230629" "2020_20230927")
+                   ("dict_mini" "2019_20230629" "2019_20230927")
+                   ("dict_revised" "2015_20230626" "2015_20230928")))
+    (d:generate-diff dict
+      :old-commit "cc95b03"
+      :new-commit "2028973"
+      :old-version old-version
+      :new-version new-version))
+  (k/send-notification "Done"))
