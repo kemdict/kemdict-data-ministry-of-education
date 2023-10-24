@@ -32,10 +32,10 @@
 
 轉換用程式碼與編輯的著作權（如果有的話）由如月飛羽 (Kisaragi Hiu) 以 [CC0](https://creativecommons.org/publicdomain/zero/1.0/legalcode) 釋出。
 
-- 中華民國教育部（Ministry of Education, R.O.C.）。《重編國語辭典修訂本》（版本編號： 2015_20230626）網址：http://dict.revised.moe.edu.tw/
-- 中華民國教育部（Ministry of Education, R.O.C.）。《國語辭典簡編本》（版本編號：2014_20230628）網址：http://dict.concised.moe.edu.tw/
-- 中華民國教育部（Ministry of Education, R.O.C.）。《成語典》（版本編號：2020_20230629）網址：http://dict.idioms.moe.edu.tw/
-- 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》（版本編號：2019_20230629）網址：http://dict.mini.moe.edu.tw
+- 中華民國教育部（Ministry of Education, R.O.C.）。《重編國語辭典修訂本》（版本編號： 2015_20230928）網址：http://dict.revised.moe.edu.tw/
+- 中華民國教育部（Ministry of Education, R.O.C.）。《國語辭典簡編本》（版本編號：2014_20230926）網址：http://dict.concised.moe.edu.tw/
+- 中華民國教育部（Ministry of Education, R.O.C.）。《成語典》（版本編號：2020_20230927）網址：http://dict.idioms.moe.edu.tw/
+- 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》（版本編號：2019_20230927）網址：http://dict.mini.moe.edu.tw
 - 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣客家語常用詞辭典》（版本編號：1110429）網址：https://hakkadict.moe.edu.tw
 
 ```
