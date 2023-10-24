@@ -45,7 +45,7 @@ dict_idioms.json: $(wildcard 原始資料/dict_idioms*.xls)
 
 dict_mini.json: $(wildcard 原始資料/dict_mini*.xlsx)
 	$(call convert,$<)
-	npx csvtojson $(patsubst %.xlsx,%.csv,$<) --noheader=false --headers='["title","radical","stroke_count","non_radical_stroke_count","bopomofo","definition"]' > "$@"
+	npx csvtojson $(patsubst %.xlsx,%.csv,$<) --noheader=false --headers='["id","title","radical","stroke_count","non_radical_stroke_count","bopomofo","definition"]' > "$@"
 
 all: dict_revised.json dict_concised.json dict_idioms.json dict_mini.json hakkadict.json
 .DEFAULT_GOAL := all
