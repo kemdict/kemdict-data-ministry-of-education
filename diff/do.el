@@ -49,16 +49,3 @@ The output file is named
     (with-temp-file (format "%s - %s-%s - removed.json" dict old-version new-version)
       (insert
        (json-serialize (seq-into (seq-difference removed added) 'vector))))))
-
-(progn
-  (pcase-dolist (`(,dict ,old-version ,new-version)
-                 '(("dict_concised" "2014_20230628" "2014_20230926")
-                   ("dict_idioms" "2020_20230629" "2020_20230927")
-                   ("dict_mini" "2019_20230629" "2019_20230927")
-                   ("dict_revised" "2015_20230626" "2015_20230928")))
-    (d:generate-diff dict
-      :old-commit "cc95b03"
-      :new-commit "2028973"
-      :old-version old-version
-      :new-version new-version))
-  (k/send-notification "Done"))
