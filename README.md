@@ -17,7 +17,16 @@
 - 安裝 Node、npm、LibreOffice
 - `npm install`
 - 從[教育部國語辭典公眾授權網](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html)閱讀使用說明及授權後下載原始檔案（`.xlsx` 或 `.xls`），放在`原始資料/`這個資料夾裡。
-  - 我還沒改用《臺灣客家語常用詞辭典》[新版資料釋出](https://hakkadict.moe.edu.tw/resource_download/)
+  - 《臺灣客語辭典》要到[資料釋出](https://hakkadict.moe.edu.tw/resource_download/)下載，類似這樣
+
+  ```sh
+  date=20240515
+  for variant in 四縣腔 海陸腔 大埔腔 饒平腔 詔安腔 南四縣腔; do
+      curl https://hakkadict.moe.edu.tw/static/resource/客語資源下載/本辭典的文字/"$variant"詞條詞目文字.ods \
+          > hakkadict_"$variant"_"$date".ods
+  done
+  ```
+
   - 也應該要改用《教育部臺灣閩南語常用詞辭典》[新版的資料釋出](https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2)
 - 取代舊的檔案之後 `make all`
 
@@ -37,7 +46,7 @@
 - 中華民國教育部（Ministry of Education, R.O.C.）。《國語辭典簡編本》（版本編號：2014_20240326）網址：http://dict.concised.moe.edu.tw/
 - 中華民國教育部（Ministry of Education, R.O.C.）。《成語典》（版本編號：2020_20240328）網址：http://dict.idioms.moe.edu.tw/
 - 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》（版本編號：2019_20240328）網址：http://dict.mini.moe.edu.tw
-- 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣客家語常用詞辭典》（版本編號：1110429）網址：https://hakkadict.moe.edu.tw
+- 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣客語辭典》（取用於 2024 年 5 月 15 日）網址：https://hakkadict.moe.edu.tw
 
 ```
 《重編國語辭典修訂本》
@@ -87,20 +96,6 @@
 地　　址	新北市三峽區三樹路2號
 電　　話	(02)7740-7282
 傳　　真	(02)7740-7284
-
-
-
-中華民國九十七年五月學術網路初版
-臺灣客家語常用詞辭典
-編　　　輯　　　者： 	教育部國語推行委員會
-編輯委員會主任委員： 	曹逢甫
-總　　　編　　　輯： 	羅肇錦
-副　總　　編　　輯： 	何石松、劉醇鑫
-發　　　行　　　人： 	杜正勝
-發　　　行　　　所： 	教育部
-地　　　　　　　址： 	臺北市中山南路5號
-電　　　　　　　話： 	(02)7736-6810
-
 ```
 
 ## Key 的對應
@@ -191,27 +186,15 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 
 ### `hakkadict.json`
 
-| Original           | Here         | Notes                          |
-|--------------------|--------------|--------------------------------|
-| 系統編號           | id           |                                |
-| 詞目               | title        |                                |
-| 詞性               | type         |                                |
-| 詞目索引分類       | category     |                                |
-| 四縣腔音讀         | `p_四縣`     | p 指 pronunciation             |
-| 海陸腔音讀         | `p_海陸`     |                                |
-| 大埔腔音讀         | `p_大埔`     |                                |
-| 饒平腔音讀         | `p_饒平`     |                                |
-| 詔安腔音讀         | `p_詔安`     |                                |
-| 南四縣腔音讀       | `p_南四縣`   |                                |
-| 釋義               | definition   |                                |
-| 近義詞             | synonyms     |                                |
-| 反義詞             | antonyms     |                                |
-| 對應國語           | `corr_zh`      | corr 指 correspond                               |
-| 大埔腔相關字詞     | `r_大埔`     | r 指 related                   |
-| 大埔腔相關字詞音讀 | `r_p_大埔`   | `r_p` 指 related pronunciation |
-| 饒平腔相關字詞     | `r_饒平`     |                                |
-| 饒平腔相關字詞音讀 | `r_p_饒平`   |                                |
-| 詔安腔相關字詞     | `r_詔安`     |                                |
-| 詔安腔相關字詞音讀 | `r_p_詔安`   |                                |
-| 南四縣相關字詞     | `r_南四縣`   |                                |
-| 南四縣相關字詞音讀 | `r_p_南四縣` |                                |
+| Original     | Here            | Notes          |
+|--------------|-----------------|----------------|
+| 序號         | id              |                |
+| 詞目         | title           |                |
+| 詞性         | pos             | part of speech |
+| 詞目索引     | index_path      |                |
+| 音讀         | pn   | pronunciation                |
+| 釋義         | def      | definition                |
+| 例句         | example         |                |
+| 相似詞       | synonyms        |                |
+| 相反詞       | antonyms        |                |
+| 對應音檔名稱 | audio_file_name |                |

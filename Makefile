@@ -14,16 +14,22 @@
 # https://wiki.openoffice.org/wiki/Documentation/DevGuide/Spreadsheets/Filter_Options
 
 ifneq (,$(shell command -v libreoffice))
-convert = libreoffice "--infilter=CSV:44,34,76,1" --convert-to csv --outdir "原始資料" "$(1)"
+# We add the semicolon so it's possible / simpler to use foreach
+convert = libreoffice "--infilter=CSV:44,34,76,1" --convert-to csv --outdir "原始資料" "$(1)";
 else ifneq (,$(shell command -v in2csv))
 convert = in2csv "$(1)" > "$(basename $(1)).csv"
 else
 $(error "libreoffice or in2csv (from csvkit) not found")
 endif
 
-hakkadict.json: $(wildcard 原始資料/《臺灣客家語常用詞辭典》*.ods)
+# hakkadict.json: $(wildcard 原始資料/hakkadict*.ods)
+# 	$(foreach ods,$^,$(call convert,$(ods)))
+# 	npx csvtojson $(patsubst %.ods,%.csv,$<) --noheader=false --headers='["id","title","pos","index_path","pn","def","example","synonyms","antonyms","audio_file_name"]' > "$@"
+
+# FIXME: we need to merge them into one file. Somehow.
+hakkadict.json: $(wildcard 原始資料/hakkadict_四縣腔*.ods)
 	$(call convert,$<)
-	npx csvtojson "$(patsubst %.ods,%.csv,$<)" --noheader=false --headers='["id","title","type","category","p_四縣","p_海陸","p_大埔","p_饒平","p_詔安","p_南四縣","definition","synonyms","antonyms","corr_zh","r_大埔","r_p_大埔","r_饒平","r_p_饒平","r_詔安","r_p_詔安","r_南四縣","r_p_南四縣"]' > "$@"
+	npx csvtojson $(patsubst %.ods,%.csv,$<) --noheader=false --headers='["id","title","pos","index_path","pn","def","example","synonyms","antonyms","audio_file_name"]' > "$@"
 
 dict_revised.json: $(wildcard 原始資料/dict_revised*.xlsx)
 	$(call convert,$<)
