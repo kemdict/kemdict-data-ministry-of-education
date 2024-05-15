@@ -156,7 +156,7 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 | 注音           | bopomofo           |
 | 漢語拼音       | pinyin             |
 | 釋義           | definition         |
-| 典源文獻名稱   | `source_name`      |
+| 典源文獻出處   | `source_source`      |
 | 典源文獻內容   | `source_content`   |
 | 典源-註解      | `source_comment`   |
 | 典源-參考      | `source_reference` |
@@ -164,7 +164,7 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 | 用法-語意說明  | 用法語意說明       |
 | 用法-使用類別  | 用法使用類別       |
 | 用法-例句      | 用法例句           |
-| 書證           | 書證               |
+| x書證           | 書證               |
 | 辨識-同        | 辨識同             |
 | 辨識-異        | 辨識異             |
 | 辨識-例句      | 辨識例句           |
