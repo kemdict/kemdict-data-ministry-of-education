@@ -9,8 +9,8 @@ This asks Git to generate a diff between OLD-COMMIT and NEW-COMMIT.
 The output file is named
   \"DICT - <OLD-COMMIT>-<NEW-COMMIT> - {added|removed}.json\"."
   (declare (indent 1))
-  (let ((removed (set-new))
-        (added (set-new))
+  (let ((removed (set-create))
+        (added (set-create))
         (size 0))
     (with-current-buffer (get-buffer-create "test")
       (erase-buffer)
