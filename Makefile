@@ -35,8 +35,7 @@ dict_revised.json: $(wildcard 原始資料/dict_revised*.xlsx)
 	$(call convert,$<)
 	npx csvtojson $(patsubst %.xlsx,%.csv,$<) --noheader=false --headers='["title","alias","length","id","radical","stroke_count","non_radical_stroke_count","het_sort","bopomofo","v_type","v_bopomofo","pinyin","v_pinyin","synonyms","antonyms","definition","het_ref","異體字"]' > "$@"
 
-dict_concised.json: $(wildcard 原始資料/dict_concised*.xlsx)
-	$(call convert,$<)
+dict_concised.json: $(wildcard 原始資料/dict_concised*.csv)
 	npx csvtojson $(patsubst %.xlsx,%.csv,$<) --noheader=false --headers='["title","id","radical","stroke_count","non_radical_stroke_count","het_sort","bopomofo","v_type","v_bopomofo","pinyin","v_pinyin","synonyms","antonyms","definition","het_ref"]' > "$@"
 
 dict_idioms.json: $(wildcard 原始資料/dict_idioms*.xls)
@@ -50,3 +49,6 @@ dict_mini.json: $(wildcard 原始資料/dict_mini*.xlsx)
 all: dict_revised.json dict_concised.json dict_idioms.json dict_mini.json hakkadict.json
 .DEFAULT_GOAL := all
 .PHONY: all
+
+update:
+	deno run update.ts

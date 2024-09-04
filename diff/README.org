@@ -13,10 +13,10 @@ Use =./do.el=.
 (require 'notifications)
 (load-file "./do.el")
 (pcase-dolist (`(,dict ,old-version ,new-version)
-               '(("dict_concised" "2014_20230926" "2014_20240326")
-                 ("dict_idioms"   "2020_20230927" "2020_20240328")
-                 ("dict_mini"     "2019_20230927" "2019_20240328")
-                 ("dict_revised"  "2015_20230928" "2015_20240327")))
+               '(("dict_concised" "2014_20240326" "2014_20240821")
+                 ("dict_idioms"   "2020_20240328" "2020_20240627")
+                 ("dict_mini"     "2019_20240328" "2019_20240626")
+                 ("dict_revised"  "2015_20240327" "2015_20240904")))
   (d:generate-diff dict
     :old-commit "be3bb5f"
     :new-commit "d4c51fa"

@@ -14,8 +14,9 @@
 
 ## Updating
 
-- 安裝 Node、npm、LibreOffice
+- 安裝 Node、npm、Deno、LibreOffice
 - `npm install`
+- 自動化下載：`make update` 或是 `deno run update.ts`
 - 從[教育部國語辭典公眾授權網](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html)閱讀使用說明及授權後下載原始檔案（`.xlsx` 或 `.xls`），放在`原始資料/`這個資料夾裡。
   - 《臺灣客語辭典》要到[資料釋出](https://hakkadict.moe.edu.tw/resource_download/)下載，類似這樣
 
@@ -32,7 +33,7 @@
 
 如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
 
-更新完之後用 `diff/do.el` 分析新版本所新增和移除的詞。
+更新完之後打開 `diff/README.org` 分析新版本所新增和移除的詞。
 
 ## License
 
