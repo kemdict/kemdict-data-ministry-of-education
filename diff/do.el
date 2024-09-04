@@ -28,7 +28,7 @@ The output file is named
           (catch 'continue
             (beginning-of-line)
             (forward-line)
-            (message "%s%%" (* 100 (/ (point) size 1.0)))
+            (message "%s - %s%%" dict (* 100 (/ (point) size 1.0)))
             (unless (memql (char-after) '(?- ?+))
               (throw 'continue nil))
             (let ((flag (char-after))

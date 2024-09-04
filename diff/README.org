@@ -18,8 +18,8 @@ Use =./do.el=.
                  ("dict_mini"     "2019_20240328" "2019_20240626")
                  ("dict_revised"  "2015_20240327" "2015_20240904")))
   (d:generate-diff dict
-    :old-commit "be3bb5f"
-    :new-commit "d4c51fa"
+    :old-commit "e813d5a"
+    :new-commit "39a6637"
     :old-version old-version
     :new-version new-version))
 
@@ -27,4 +27,4 @@ Use =./do.el=.
 #+end_src
 
 #+RESULTS:
-: 12
+: 33
