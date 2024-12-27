@@ -38,9 +38,9 @@ dict_revised.json: $(wildcard 原始資料/dict_revised*.xlsx)
 dict_concised.json: $(wildcard 原始資料/dict_concised*.csv)
 	npx csvtojson $(patsubst %.xlsx,%.csv,$<) --noheader=false --headers='["title","id","radical","stroke_count","non_radical_stroke_count","het_sort","bopomofo","v_type","v_bopomofo","pinyin","v_pinyin","synonyms","antonyms","definition","het_ref"]' > "$@"
 
-dict_idioms.json: $(wildcard 原始資料/dict_idioms*.xls)
+dict_idioms.json: $(wildcard 原始資料/dict_idioms*.xlsx)
 	$(call convert,$<)
-	npx csvtojson $(patsubst %.xls,%.csv,$<) --noheader=false --headers='["id","title","bopomofo","pinyin","definition","source_source","source_content","source_comment","source_reference","典故說明","用法語意說明","用法使用類別","用法例句","書證","辨識同","辨識異","辨識例句","形音辨誤","近義同","近義反","word_ref"]' > "$@"
+	npx csvtojson $(patsubst %.xlsx,%.csv,$<) --noheader=false --headers='["id","title","bopomofo","pinyin","definition","source_source","source_content","source_comment","source_reference","典故說明","用法語意說明","用法使用類別","用法例句","書證","辨識同","辨識異","辨識例句","形音辨誤","近義同","近義反","word_ref","is_main"]' > "$@"
 
 dict_mini.json: $(wildcard 原始資料/dict_mini*.xlsx)
 	$(call convert,$<)

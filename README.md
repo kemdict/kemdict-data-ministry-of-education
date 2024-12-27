@@ -14,21 +14,22 @@
 
 ## Updating
 
-- 安裝 Node、npm、Deno、LibreOffice
+- 安裝 Node、npm、LibreOffice
 - `npm install`
-- 自動化下載：`make update` 或是 `deno run update.ts`
-- 從[教育部國語辭典公眾授權網](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html)閱讀使用說明及授權後下載原始檔案（`.xlsx` 或 `.xls`），放在`原始資料/`這個資料夾裡。
+- 自動化下載：`make update` 或是 `npx tsx update.ts`
+- 或是手動下載：
+  - 從[教育部國語辭典公眾授權網](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html)閱讀使用說明及授權後下載原始檔案（`.xlsx` 或 `.xls`），放在`原始資料/`這個資料夾裡。
   - 《臺灣客語辭典》要到[資料釋出](https://hakkadict.moe.edu.tw/resource_download/)下載，類似這樣
 
-  ```sh
-  date=20240515
-  for variant in 四縣腔 海陸腔 大埔腔 饒平腔 詔安腔 南四縣腔; do
-      curl https://hakkadict.moe.edu.tw/static/resource/客語資源下載/本辭典的文字/"$variant"詞條詞目文字.ods \
-          > hakkadict_"$variant"_"$date".ods
-  done
-  ```
+    ```sh
+    date=20240515
+    for variant in 四縣腔 海陸腔 大埔腔 饒平腔 詔安腔 南四縣腔; do
+        curl https://hakkadict.moe.edu.tw/static/resource/客語資源下載/本辭典的文字/"$variant"詞條詞目文字.ods \
+            > hakkadict_"$variant"_"$date".ods
+done
 
-  - 也應該要改用《教育部臺灣閩南語常用詞辭典》[新版的資料釋出](https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2)
+    ```
+    - 也應該要改用《教育部臺灣閩南語常用詞辭典》[新版的資料釋出](https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2)
 - 取代舊的檔案之後 `make all`
 
 如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
@@ -43,10 +44,10 @@
 
 轉換用程式碼與編輯的著作權（如果有的話）由如月飛羽 (Kisaragi Hiu) 以 [CC0](https://creativecommons.org/publicdomain/zero/1.0/legalcode) 釋出。
 
-- 中華民國教育部（Ministry of Education, R.O.C.）。《重編國語辭典修訂本》（版本編號： 2015_20240904）網址：http://dict.revised.moe.edu.tw/
-- 中華民國教育部（Ministry of Education, R.O.C.）。《國語辭典簡編本》（版本編號：2014_20240821）網址：http://dict.concised.moe.edu.tw/
-- 中華民國教育部（Ministry of Education, R.O.C.）。《成語典》（版本編號：2020_20240627）網址：http://dict.idioms.moe.edu.tw/
-- 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》（版本編號：2019_20240626）網址：http://dict.mini.moe.edu.tw
+- 中華民國教育部（Ministry of Education, R.O.C.）。《重編國語辭典修訂本》（版本編號： 2015_20241225）網址：http://dict.revised.moe.edu.tw/
+- 中華民國教育部（Ministry of Education, R.O.C.）。《國語辭典簡編本》（版本編號：2014_20241226）網址：http://dict.concised.moe.edu.tw/
+- 中華民國教育部（Ministry of Education, R.O.C.）。《成語典》（版本編號：2020_20241226）網址：http://dict.idioms.moe.edu.tw/
+- 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》（版本編號：2019_20241223）網址：http://dict.mini.moe.edu.tw
 - 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣客語辭典》（取用於 2024 年 5 月 15 日）網址：https://hakkadict.moe.edu.tw
 
 ```
@@ -170,9 +171,10 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 | 辨識-異        | 辨識異             |
 | 辨識-例句      | 辨識例句           |
 | 形音辨誤       | 形音辨誤           |
-| 近義-同        | 近義同             |
-| 近義-反        | 近義反             |
+| 近義成語        | 近義同             |
+| 反義成語        | 近義反             |
 | 參考成語(正文) | `word_ref`     |
+| 主條目/非主條目 | `is_main` |
 
 ### `dict_mini.json`
 
@@ -180,7 +182,7 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 |------------|----------------------------|
 | 單字       | title                      |
 | 部首       | radical                    |
-| 總筆畫數   | `stroke_count`             |
+| 單字筆畫   | `stroke_count`             |
 | 部首外筆畫 | `non_radical_stroke_count` |
 | 注音       | bopomofo                   |
 | 解釋       | definition                 |
