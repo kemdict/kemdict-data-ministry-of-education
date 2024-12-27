@@ -9,17 +9,21 @@ Use =./do.el=.
 - It requires my [[https://github.com/kisaragi-hiu/set.el][set.el]], which is a first-in-first-out (like JavaScript) set implementation based on combining a hash table and a list (to maintain order).
 - Right now you have to fill in the version numbers manually.
 
+#+begin_src sh
+cask install
+#+end_src
+
 #+begin_src emacs-lisp
 (require 'notifications)
 (load-file "./do.el")
 (pcase-dolist (`(,dict ,old-version ,new-version)
-               '(("dict_concised" "2014_20240326" "2014_20240821")
-                 ("dict_idioms"   "2020_20240328" "2020_20240627")
-                 ("dict_mini"     "2019_20240328" "2019_20240626")
-                 ("dict_revised"  "2015_20240327" "2015_20240904")))
+               '(("dict_concised" "2014_20240821" "2014_20241226")
+                 ("dict_idioms"   "2020_20240627" "2020_20241226")
+                 ("dict_mini"     "2019_20240626" "2019_20241223")
+                 ("dict_revised"  "2015_20240904" "2015_20241225")))
   (d:generate-diff dict
-    :old-commit "e813d5a"
-    :new-commit "39a6637"
+    :old-commit "fac4c58"
+    :new-commit "040c91d"
     :old-version old-version
     :new-version new-version))
 
@@ -27,4 +31,4 @@ Use =./do.el=.
 #+end_src
 
 #+RESULTS:
-: 33
+: 3
