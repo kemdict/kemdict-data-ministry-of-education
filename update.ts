@@ -2,7 +2,7 @@
 
 import { $ } from "zx";
 
-const dicts = {
+export const dicts = {
   dict_concised: { v: "2014_20241226" },
   dict_idioms: { v: "2020_20241226" },
   dict_mini: { v: "2019_20241223" },
