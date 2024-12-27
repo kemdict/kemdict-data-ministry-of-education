@@ -1,12 +1,12 @@
 #!/usr/bin/env deno run
 
-import { $ } from "npm:zx";
+import { $ } from "zx";
 
 const dicts = {
-  dict_concised: { v: "2014_20240821" },
-  dict_idioms: { v: "2020_20240627" },
-  dict_mini: { v: "2019_20240626" },
-  dict_revised: { v: "2015_20240904" },
+  dict_concised: { v: "2014_20241226" },
+  dict_idioms: { v: "2020_20241226" },
+  dict_mini: { v: "2019_20241223" },
+  dict_revised: { v: "2015_20241225" },
 } as const;
 
 async function download() {

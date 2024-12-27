@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "csvtojson": "^2.0.10"
-  }
+    "csvtojson": "^2.0.10",
+    "tsx": "^4.19.2",
+    "zx": "^8.3.0"
+  },
+  "type": "module"
 }

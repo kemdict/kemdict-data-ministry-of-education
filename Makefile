@@ -51,4 +51,4 @@ all: dict_revised.json dict_concised.json dict_idioms.json dict_mini.json hakkad
 .PHONY: all
 
 update:
-	deno run update.ts
+	npx tsx update.ts
