@@ -150,7 +150,7 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 | 多音參見訊息                       | `het_ref`                  |       |
 
 ### `dict_idioms.json`
-=======
+
 | Original       | Here               |
 |----------------|--------------------|
 | 編號           | id                 |
