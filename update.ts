@@ -14,6 +14,5 @@ async function download() {
 }
 
 await download();
-await $`make all -j 4`;
 
 console.log("Now go into diff/ and fiddle with it to produce the differences");

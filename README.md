@@ -14,9 +14,8 @@
 
 ## Updating
 
-- 安裝 Node、npm、LibreOffice
-- `npm install`
-- 自動化下載：`make update` 或是 `npx tsx update.ts`
+- 更新 versions.json
+- 自動化下載：`npx tsx download.ts`
 - 或是手動下載：
   - 從[教育部國語辭典公眾授權網](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html)閱讀使用說明及授權後下載原始檔案（`.xlsx` 或 `.xls`），放在`原始資料/`這個資料夾裡。
   - 《臺灣客語辭典》要到[資料釋出](https://hakkadict.moe.edu.tw/resource_download/)下載，類似這樣
@@ -30,6 +29,8 @@ done
 
     ```
     - 也應該要改用《教育部臺灣閩南語常用詞辭典》[新版的資料釋出](https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2)
+- 安裝 Node、npm、LibreOffice
+- `npm install`
 - 取代舊的檔案之後 `make all`
 
 如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
