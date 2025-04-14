@@ -35,7 +35,11 @@ done
 
 如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
 
-更新完之後打開 `diff/README.org` 分析新版本所新增和移除的詞。
+- 然後 make a commit
+- go to diff/, then `cask install`
+- 打開 `diff/README.org` 然後執行裡面的程式碼區塊
+
+這樣會產生前後的差異。commit those as well.
 
 ## License
 
