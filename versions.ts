@@ -1,0 +1,18 @@
+// Dictionaries from Ministry of Education, plus their current versions and
+// previous versions.
+//
+// Previous versions are used by the diff generation process.
+// That process currently parses this in an ad-hoc way, so:
+// - the newlines here are sensitive: each dict should be in one line.
+// - the variable name/type is also sensitive. It has to be "const dicts".
+// - the order is sensitive: current must come before previous
+//
+// This ridiculous requirement would be relaxed if the diff generation process
+// gets rewritten in JS at some point.
+// prettier-ignore
+export const dicts = {
+  dict_concised: { current: "2014_20250326", previous: "2014_20241226" },
+  dict_idioms:   { current: "2020_20250324", previous: "2020_20241226" },
+  dict_mini:     { current: "2019_20250328", previous: "2019_20241223" },
+  dict_revised:  { current: "2015_20250327", previous: "2015_20241225" },
+};

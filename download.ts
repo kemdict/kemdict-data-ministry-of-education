@@ -1,10 +1,10 @@
 #!/usr/bin/env deno run
 
 import { $ } from "zx";
-import dicts from "./versions.json";
+import { dicts } from "./versions.ts";
 
 async function download() {
-  for (const [dict, { v: version }] of Object.entries(dicts)) {
+  for (const [dict, { current: version }] of Object.entries(dicts)) {
     const url = `https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/download/${dict}_${version}.zip`;
     const dir = "原始資料";
     await $`curl -L ${url} > ${dir}/${dict}_${version}.zip`;

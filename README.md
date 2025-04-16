@@ -14,7 +14,7 @@
 
 ## Updating
 
-- 更新 versions.json
+- 更新 versions.ts，填入新的版本號碼（舊的版本號碼移到 previous）
 - 自動化下載：`npx tsx download.ts`
 - 或是手動下載：
   - 從[教育部國語辭典公眾授權網](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html)閱讀使用說明及授權後下載原始檔案（`.xlsx` 或 `.xls`），放在`原始資料/`這個資料夾裡。
@@ -35,11 +35,10 @@ done
 
 如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
 
-- 然後 make a commit
 - go to diff/, then `cask install`
 - 打開 `diff/README.org` 然後執行裡面的程式碼區塊
 
-這樣會產生前後的差異。commit those as well.
+這樣會產生前後的差異比對結果。Now make a commit and push.
 
 ## License
 

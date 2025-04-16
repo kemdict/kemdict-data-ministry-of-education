@@ -2,12 +2,34 @@
 
 (require 'set)
 
-(cl-defun d:generate-diff (dict &key old-commit new-commit old-version new-version)
+(defun d:read-dicts-versions ()
+  "Read dictionary versions from ../versions.ts.
+Return ((DICT PREVIOUS-VERSION CURRENT-VERSION) ...)."
+  (with-temp-buffer
+    (insert-file-contents "../versions.ts")
+    (unless (re-search-forward "const dicts" nil t)
+      (error "Cannot find the dicts line"))
+    (let ((ret nil))
+      (forward-line)
+      (while (re-search-forward
+              (rx (+ " ")
+                  (group (+ (any "a-z" "_"))) ":"
+                  (* nonl)
+                  "current: \"" (group (+ (any "0-9" "_"))) "\", "
+                  "previous: \"" (group (+ (any "0-9" "_"))) "\"")
+              nil t)
+        (push (list (match-string 1) (match-string 3) (match-string 2))
+              ret))
+      (nreverse ret))))
+
+(cl-defun d:generate-diff (dict &key (old-commit "HEAD") old-version new-version)
   "Generate diff for DICT.
-This asks Git to generate a diff between OLD-COMMIT and NEW-COMMIT.
+This asks Git to generate a diff between OLD-COMMIT and the working copy.
+OLD-COMMIT is \"HEAD\" by default, meaning we are comparing the latest
+commit with the working copy.
 
 The output file is named
-  \"DICT - <OLD-COMMIT>-<NEW-COMMIT> - {added|removed}.json\"."
+  \"DICT - <OLD-VERSION>-<NEW-VERSION> - {added|removed}.json\"."
   (declare (indent 1))
   (let ((removed (set-create))
         (added (set-create))
@@ -17,7 +39,7 @@ The output file is named
       (call-process
        "git" nil '(t nil) nil
        "diff" "-U0"
-       old-commit new-commit
+       old-commit
        "--"
        (format "../%s.json" dict))
       (setq size (buffer-size))
