@@ -23,7 +23,7 @@ cask install
                  ("dict_revised"  "2015_20241225" "2015_20250327")))
   (d:generate-diff dict
     :old-commit "08586f2566e6e3cf5fd35d3d969cabec90261963"
-    :new-commit "6cfe4c6d17660d054d1b4a114bd6c3ea41947ea6"
+    :new-commit "a55b4144aa760cc88b204d31057d14508b5082a3"
     :old-version old-version
     :new-version new-version))
 
@@ -31,4 +31,4 @@ cask install
 #+end_src
 
 #+RESULTS:
-: 19
+: 3
