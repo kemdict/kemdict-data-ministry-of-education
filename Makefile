@@ -49,3 +49,8 @@ dict_mini.json: $(wildcard 原始資料/dict_mini*.xlsx)
 all: dict_revised.json dict_concised.json dict_idioms.json dict_mini.json hakkadict.json
 .DEFAULT_GOAL := all
 .PHONY: all
+
+.PHONY: diff
+diff:
+	cd diff && cask install
+	cd diff && emacs -Q --script do.el

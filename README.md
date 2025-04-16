@@ -35,8 +35,7 @@ done
 
 如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
 
-- go to diff/, then `cask install`
-- 打開 `diff/README.org` 然後執行裡面的程式碼區塊
+- `make diff`
 
 這樣會產生前後的差異比對結果。Now make a commit and push.
 

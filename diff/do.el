@@ -71,3 +71,15 @@ The output file is named
     (with-temp-file (format "%s - %s-%s - removed.json" dict old-version new-version)
       (insert
        (json-serialize (seq-into (seq-difference removed added) 'vector))))))
+
+(defun d:main ()
+  "Main function."
+  (require 'notifications)
+  (load-file "./do.el")
+  (pcase-dolist (`(,dict ,old-version ,new-version) (d:read-dicts-versions))
+    (d:generate-diff dict
+      :old-version old-version
+      :new-version new-version))
+  (notifications-notify :body "Done"))
+
+(d:main)

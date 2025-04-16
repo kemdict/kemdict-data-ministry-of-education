@@ -7,23 +7,4 @@ Right now I'm putting everything in separate files.
 Use =./do.el=.
 
 - It requires my [[https://github.com/kisaragi-hiu/set.el][set.el]], which is a first-in-first-out (like JavaScript) set implementation based on combining a hash table and a list (to maintain order).
-- Fill in version numbers in ../versions.ts.
-
-#+begin_src sh
-cask install
-#+end_src
-
-#+begin_src emacs-lisp
-(require 'notifications)
-(load-file "./do.el")
-(pcase-dolist (`(,dict ,old-version ,new-version) (d:read-dicts-versions))
-  (d:generate-diff dict
-    :old-commit "08586f2566e6e3cf5fd35d3d969cabec90261963"
-    :old-version old-version
-    :new-version new-version))
-
-(notifications-notify :body "Done")
-#+end_src
-
-#+RESULTS:
-: 3
+- Fill in version numbers in ../versions.ts, then run =emacs -Q --script do.el=.
