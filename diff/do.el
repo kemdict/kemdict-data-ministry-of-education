@@ -1,6 +1,6 @@
 ;; -*- mode: lisp-interaction; lexical-binding: t; -*-
 
-(require 'set)
+(require 'ordered-set)
 
 (defun d:read-dicts-versions ()
   "Read dictionary versions from ../versions.ts.
@@ -31,8 +31,8 @@ commit with the working copy.
 The output file is named
   \"DICT - <OLD-VERSION>-<NEW-VERSION> - {added|removed}.json\"."
   (declare (indent 1))
-  (let ((removed (set-create))
-        (added (set-create))
+  (let ((removed (ordered-set-create))
+        (added (ordered-set-create))
         (size 0))
     (with-current-buffer (get-buffer-create "test")
       (erase-buffer)
@@ -60,8 +60,8 @@ The output file is named
                 ;; (message "%s" (line-number-at-pos))
                 (setq title (gethash "title" (json-parse-buffer)))
                 (if (eql flag ?-)
-                    (set-add removed title)
-                  (set-add added title))))))))
+                    (ordered-set-add removed title)
+                  (ordered-set-add added title))))))))
     ;; (with-temp-file (format "%s - %s-%s - modified.json" dict old-version new-version)
     ;;   (insert
     ;;    (json-serialize (seq-into (seq-intersection added removed) 'vector))))
@@ -78,8 +78,8 @@ The output file is named
   (load-file "./do.el")
   (pcase-dolist (`(,dict ,old-version ,new-version) (d:read-dicts-versions))
     (d:generate-diff dict
-      :old-version old-version
-      :new-version new-version))
+                     :old-version old-version
+                     :new-version new-version))
   (notifications-notify :body "Done"))
 
 (d:main)

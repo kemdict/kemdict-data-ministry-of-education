@@ -1,1 +1,1 @@
-(depends-on "set" :git "https://github.com/kisaragi-hiu/set.el")
+(depends-on "ordered-set" :git "https://github.com/kisaragi-hiu/ordered-set.el")
