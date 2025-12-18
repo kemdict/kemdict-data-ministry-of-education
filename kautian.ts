@@ -109,7 +109,7 @@ interface OutputWord {
     | "近反義詞不單列詞目者"
     | "臺華共同詞"
     | "附錄";
-  han: string;
+  title: string;
   alternativeHan: string[];
   tl: string;
   other: {
@@ -198,7 +198,7 @@ const words = collect(wordsStmt.iterate(), (word) => {
   return {
     id: inputWord.詞目id,
     type: inputWord.詞目類型,
-    han: inputWord.漢字,
+    title: inputWord.漢字,
     alternativeHan: alternativeHan,
     categories: inputWord.分類.map((category) => ({
       id: categories[category],
