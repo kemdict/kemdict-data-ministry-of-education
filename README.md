@@ -9,6 +9,7 @@
 - `dict_idioms`: 成語典
 - `dict_mini`: 國語小字典
 - `hakkadict`: 臺灣客家語常用詞辭典
+- `kautian`: 臺灣台語常用詞辭典
 
 原始資料在`./原始資料`這個資料夾下，五個 JSON 檔案是以下流程生成的檔案。
 
@@ -52,6 +53,7 @@ done
 - 中華民國教育部（Ministry of Education, R.O.C.）。《成語典》（版本編號：2020_20241226）網址：http://dict.idioms.moe.edu.tw/
 - 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》（版本編號：2019_20241223）網址：http://dict.mini.moe.edu.tw
 - 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣客語辭典》（取用於 2024 年 5 月 15 日）網址：https://hakkadict.moe.edu.tw
+- 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣台語常用詞辭典》（取用於 2025 年 12 月 19 日）網址：https://sutian.moe.edu.tw
 
 ```
 《重編國語辭典修訂本》
@@ -204,3 +206,29 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 | 相似詞       | synonyms        |                |
 | 相反詞       | antonyms        |                |
 | 對應音檔名稱 | audio_file_name |                |
+
+## Kautian
+
+因為《臺灣台語常用詞辭典》的資料釋出格式是一整個 relational database 的格式，因此我發現像萌典一樣的做成有層級的會比較容易。
+
+資料表清單與目前已整合的部分：
+
+- [X] 詞目
+- [X] 義項
+- [X] 例句
+- [X] 俗唸作
+- [X] 又唸作
+- [X] 合音唸作
+- [ ] 名
+- [ ] 姓
+- [ ] 漢字羅馬字對應
+- [ ] 異用字
+- [ ] 羅馬字清單
+- [ ] 義項tuì義項反義
+- [ ] 義項tuì義項近義
+- [ ] 義項tuì詞目反義
+- [ ] 義項tuì詞目近義
+- [ ] 詞目tuì詞目反義
+- [ ] 詞目tuì詞目近義
+- [ ] 詞彙比較
+- [ ] 語音差異
