@@ -168,3 +168,4 @@ create index idx_俗唸作 on 俗唸作(詞目id);
 create index idx_又唸作 on 又唸作(詞目id);
 create index idx_合音唸作 on 合音唸作(詞目id);
 create index idx_例句 on 例句(義項id);
+create index idx_異用字 on 異用字(詞目id);

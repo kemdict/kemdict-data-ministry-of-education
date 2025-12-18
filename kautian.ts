@@ -110,6 +110,7 @@ interface OutputWord {
     | "臺華共同詞"
     | "附錄";
   han: string;
+  alternativeHan: string[];
   tl: string;
   other: {
     colloquial: string[];
@@ -144,6 +145,9 @@ const alternativeStmt = db.prepare(
 );
 const otherMergedStmt = db.prepare(
   "select 羅馬字 from 合音唸作 where 詞目id = ?",
+);
+const alternativeHanStmt = db.prepare(
+  "select 異用字 from 異用字 where 詞目id = ?",
 );
 const examplesStmt = db.prepare(`
   select 漢字, 羅馬字, 華語, 音檔檔名
@@ -187,10 +191,15 @@ const words = collect(wordsStmt.iterate(), (word) => {
     otherMergedStmt.iterate(wordId),
     (entry) => entry.羅馬字 as string,
   ).flatMap((str) => str.split("/"));
+  const alternativeHan = collect(
+    alternativeHanStmt.iterate(wordId),
+    (entry) => entry.異用字 as string,
+  );
   return {
     id: inputWord.詞目id,
     type: inputWord.詞目類型,
     han: inputWord.漢字,
+    alternativeHan: alternativeHan,
     categories: inputWord.分類.map((category) => ({
       id: categories[category],
       title: category,
