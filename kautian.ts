@@ -89,6 +89,12 @@ const kautianHet = z.object({
   ]).transform((str) => str === "" ? undefined : str),
   解說: z.string(),
 });
+const kautianExample = z.object({
+  漢字: z.string(),
+  羅馬字: z.string(),
+  華語: z.string(),
+  音檔檔名: z.string(),
+});
 interface OutputHet {
   id: number;
   // prettier-ignore
@@ -97,6 +103,11 @@ interface OutputHet {
     | "代詞" | "量詞" | "方位詞" | "連詞" | "介詞" | "嘆詞" | "擬聲詞"
     | "疑問詞" | "擬態詞" | "助動詞" | undefined;
   def: string;
+  examples: Array<{
+    han: string;
+    tl: string;
+    zh: string;
+  }>;
 }
 interface OutputWord {
   id: number;
@@ -143,15 +154,33 @@ const alternativeStmt = db.prepare(
 const otherMergedStmt = db.prepare(
   "select 羅馬字 from 合音唸作 where 詞目id = ?",
 );
+const examplesStmt = db.prepare(`
+  select 漢字, 羅馬字, 華語, 音檔檔名
+  from 例句
+  where 義項id = ?
+  order by 例句順序
+`);
 const words = collect(wordsStmt.iterate(), (word) => {
   const inputWord = kautianWord.parse(word);
   const wordId = inputWord.詞目id;
   const hets = collect(hetsStmt.iterate(wordId), (het) => {
     const inputHet = kautianHet.parse(het);
+    const examples = collect(
+      examplesStmt.iterate(inputHet.義項id),
+      (example) => {
+        const inputExample = kautianExample.parse(example);
+        return {
+          han: inputExample.漢字,
+          tl: inputExample.羅馬字,
+          zh: inputExample.華語,
+        };
+      },
+    );
     return {
       id: inputHet.義項id,
       def: inputHet.解說,
       pos: inputHet.詞性,
+      examples: examples,
     } satisfies OutputHet;
   });
   const colloquial = collect(
