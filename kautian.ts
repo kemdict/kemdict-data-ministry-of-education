@@ -112,11 +112,9 @@ interface OutputWord {
   title: string;
   alternativeHan: string[];
   tl: string;
-  other: {
-    colloquial: string[];
-    alternative: string[];
-    otherMerged: string[];
-  };
+  pnColloquial: string[];
+  pnAlternative: string[];
+  pnOtherMerged: string[];
   categories: Array<{
     id?: number;
     title: string;
@@ -205,11 +203,9 @@ const words = collect(wordsStmt.iterate(), (word) => {
       title: category,
     })),
     tl: inputWord.羅馬字,
-    other: {
-      colloquial: colloquial,
-      alternative: alternative,
-      otherMerged: otherMerged,
-    },
+    pnColloquial: colloquial,
+    pnAlternative: alternative,
+    pnOtherMerged: otherMerged,
     heteronyms: hets,
   } satisfies OutputWord;
 });
