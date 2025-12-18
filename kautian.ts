@@ -65,7 +65,15 @@ const kautianHet = z.object({
   ]).transform((str) => str === "" ? undefined : str),
   解說: z.string(),
 });
-type KautianHet = z.infer<typeof kautianHet>;
+interface OutputHet {
+  id: number;
+  // prettier-ignore
+  pos:
+    | "數詞" | "形容詞" | "副詞" | "熟語" | "助詞" | "時間詞" | "名詞" | "動詞"
+    | "代詞" | "量詞" | "方位詞" | "連詞" | "介詞" | "嘆詞" | "擬聲詞"
+    | "疑問詞" | "擬態詞" | "助動詞" | undefined;
+  def: string;
+}
 interface OutputWord {
   id: number;
   type:
@@ -77,7 +85,7 @@ interface OutputWord {
   han: string;
   tl: string;
   categories: string[];
-  heteronyms: KautianHet[];
+  heteronyms: Array<OutputHet>;
   羅馬字音檔檔名: string;
 }
 const words: Array<OutputWord> = [];
@@ -86,9 +94,15 @@ const wordsStmt = db.prepare("select * from 詞目");
 const hetsStmt = db.prepare("select * from 義項 where 詞目id = ?");
 for (const word of wordsStmt.iterate()) {
   const inputWord = kautianWord.parse(word);
-  // Fun bug: if we pass this straight to Zod's parser this will segfault in
-  // Deno. What?
-  const inputHets = hetsStmt.all(inputWord.詞目id);
+  const hets: Array<OutputHet> = [];
+  for (const het of hetsStmt.iterate(inputWord.詞目id)) {
+    const inputHet = kautianHet.parse(het);
+    hets.push({
+      id: inputHet.義項id,
+      def: inputHet.解說,
+      pos: inputHet.詞性,
+    });
+  }
   words.push({
     id: inputWord.詞目id,
     type: inputWord.詞目類型,
@@ -96,6 +110,6 @@ for (const word of wordsStmt.iterate()) {
     categories: inputWord.分類,
     tl: inputWord.羅馬字,
     羅馬字音檔檔名: inputWord.羅馬字音檔檔名,
-    heteronyms: z.array(kautianHet).parse(inputHets),
+    heteronyms: hets,
   });
 }
