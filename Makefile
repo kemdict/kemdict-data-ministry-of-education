@@ -12,10 +12,14 @@
 #
 # It's documented here:
 # https://wiki.openoffice.org/wiki/Documentation/DevGuide/Spreadsheets/Filter_Options
+#
+# The 12th option being -1 means export all sheets.
+# It's only documented in the changelog.
+# https://wiki.documentfoundation.org/ReleaseNotes/7.2#Document_Conversion
 
 ifneq (,$(shell command -v libreoffice))
 # We add the semicolon so it's possible / simpler to use foreach
-convert = libreoffice "--infilter=CSV:44,34,76,1" --convert-to csv --outdir "原始資料" "$(1)";
+convert = libreoffice "--infilter=CSV:44,34,76,1,,,,,,,,-1" --convert-to csv --outdir "原始資料" "$(1)";
 else
 $(error "libreoffice not found")
 endif
@@ -23,6 +27,11 @@ endif
 # hakkadict.json: $(wildcard 原始資料/hakkadict*.ods)
 # 	$(foreach ods,$^,$(call convert,$(ods)))
 # 	npx csvtojson $(patsubst %.ods,%.csv,$<) --noheader=false --headers='["id","title","pos","index_path","pn","def","example","synonyms","antonyms","audio_file_name"]' > "$@"
+
+kautian.csv: 原始資料/kautian-20251219.ods
+	$(call convert,$<)
+	rename kautian-20251219 kautian 原始資料/kautian*.csv
+	sqlite3 kautian.db < kautian-init.sql
 
 # FIXME: we need to merge them into one file. Somehow.
 hakkadict.json: $(wildcard 原始資料/hakkadict_四縣腔*.ods)
