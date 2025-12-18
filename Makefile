@@ -34,6 +34,9 @@ kautian.db: 原始資料/kautian-20251219.ods
 	rename kautian-20251219 kautian 原始資料/kautian*.csv
 	sqlite3 kautian.db < kautian-init.sql
 
+kautian.json: kautian.db
+	deno -A kautian.ts kautian.json
+
 # FIXME: we need to merge them into one file. Somehow.
 hakkadict.json: $(wildcard 原始資料/hakkadict_四縣腔*.ods)
 	$(call convert,$<)

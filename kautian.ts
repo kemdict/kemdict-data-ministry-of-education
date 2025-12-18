@@ -1,6 +1,7 @@
 // -*- lsp-disabled-clients: (ts-ls); -*-
+import process from "node:process";
 import { DatabaseSync } from "node:sqlite";
-import { readFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 import { z } from "zod";
 import { cached } from "@kisaragi-hiu/cached-fetch";
 import { DOMParser } from "@b-fuze/deno-dom";
@@ -27,40 +28,31 @@ const categories = Object.fromEntries(
 );
 
 // This schema parses both files from moedict-data-twblg.
-const heteronym = z.object({
-  id: z.string(),
-  trs: z.string(),
-  reading: z.optional(z.enum(["替", "白", "文", "俗"])),
-  synonyms: z.optional(z.string()),
-  antonyms: z.optional(z.string()),
-  definitions: z.array(
-    z.object({
-      // prettier-ignore
-      type: z.optional(z.enum([
-        "介", "代", "位", "副", "助", "動", "名", "嘆", "形",
-        "態", "數", "數量", "時", "熟", "疑", "聲", "連", "量",
-      ])),
-      def: z.string(),
-      example: z.optional(z.array(z.string())),
-    }),
-  ),
-});
-const word = z.object({
-  title: z.string(),
-  radical: z.optional(z.string()),
-  stroke_count: z.optional(z.int().or(z.null())),
-  non_radical_stroke_count: z.optional(z.int().or(z.null())),
-  heteronyms: z.array(heteronym),
-});
-
-const dictMoedictTwblg = z.array(word).parse(
-  JSON.parse(
-    readFileSync("../moedict-data-twblg/dict-twblg.json", {
-      encoding: "utf-8",
-    }),
-  ),
-);
-console.log(dictMoedictTwblg.length);
+// const heteronym = z.object({
+//   id: z.string(),
+//   trs: z.string(),
+//   reading: z.optional(z.enum(["替", "白", "文", "俗"])),
+//   synonyms: z.optional(z.string()),
+//   antonyms: z.optional(z.string()),
+//   definitions: z.array(
+//     z.object({
+//       // prettier-ignore
+//       type: z.optional(z.enum([
+//         "介", "代", "位", "副", "助", "動", "名", "嘆", "形",
+//         "態", "數", "數量", "時", "熟", "疑", "聲", "連", "量",
+//       ])),
+//       def: z.string(),
+//       example: z.optional(z.array(z.string())),
+//     }),
+//   ),
+// });
+// const word = z.object({
+//   title: z.string(),
+//   radical: z.optional(z.string()),
+//   stroke_count: z.optional(z.int().or(z.null())),
+//   non_radical_stroke_count: z.optional(z.int().or(z.null())),
+//   heteronyms: z.array(heteronym),
+// });
 
 const db = new DatabaseSync("kautian.db", { readOnly: true });
 
@@ -129,7 +121,6 @@ interface OutputWord {
     title: string;
   }>;
   heteronyms: Array<OutputHet>;
-  羅馬字音檔檔名: string;
 }
 
 /**
@@ -210,7 +201,14 @@ const words = collect(wordsStmt.iterate(), (word) => {
       alternative: alternative,
       otherMerged: otherMerged,
     },
-    羅馬字音檔檔名: inputWord.羅馬字音檔檔名,
     heteronyms: hets,
   } satisfies OutputWord;
 });
+
+if (process.argv[2]) {
+  writeFileSync(process.argv[2], JSON.stringify(words, null, 1));
+} else {
+  // We did everything for nothing at this point, but it's still useful to not
+  // error out for the REPL (deno repl --eval-file=<this file>).
+  console.log("No output file was passed");
+}
