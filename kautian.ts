@@ -51,7 +51,7 @@ const kautianWord = z.object({
   ]),
   漢字: z.string(),
   羅馬字: z.string(),
-  分類: z.string().transform((str) => str.split(",")),
+  分類: z.string().transform((str) => (str === "" ? [] : str.split(","))),
   羅馬字音檔檔名: z.string(),
 });
 const kautianHet = z.object({
@@ -84,32 +84,73 @@ interface OutputWord {
     | "附錄";
   han: string;
   tl: string;
+  other: {
+    colloquial: string[];
+    alternative: string[];
+  };
   categories: string[];
   heteronyms: Array<OutputHet>;
   羅馬字音檔檔名: string;
 }
-const words: Array<OutputWord> = [];
+
+/**
+ * Collect elements of `iter` after running `body` on each of them.
+ * Think a lazy .map then turning it into an array in the end.
+ */
+function collect<T, Ret>(iter: IterableIterator<T>, body: (input: T) => Ret) {
+  const result: Ret[] = [];
+  for (const elem of iter) {
+    result.push(body(elem));
+  }
+  return result;
+}
+
 const wordsStmt = db.prepare("select * from 詞目");
 // this is fine-ish because we've have an index for 義項(詞目id)
 const hetsStmt = db.prepare("select * from 義項 where 詞目id = ?");
-for (const word of wordsStmt.iterate()) {
+const colloquialStmt = db.prepare("select 羅馬字 from 俗唸作 where 詞目id = ?");
+const alternativeStmt = db.prepare(
+  "select 羅馬字 from 又唸作 where 詞目id = ?",
+);
+const otherMergedStmt = db.prepare(
+  "select 羅馬字 from 合音唸作 where 詞目id = ?",
+);
+const words = collect(wordsStmt.iterate(), (word) => {
   const inputWord = kautianWord.parse(word);
-  const hets: Array<OutputHet> = [];
-  for (const het of hetsStmt.iterate(inputWord.詞目id)) {
+  const wordId = inputWord.詞目id;
+  const hets = collect(hetsStmt.iterate(wordId), (het) => {
     const inputHet = kautianHet.parse(het);
-    hets.push({
+    return {
       id: inputHet.義項id,
       def: inputHet.解說,
       pos: inputHet.詞性,
-    });
-  }
-  words.push({
+    } as OutputHet;
+  });
+  const colloquial = collect(
+    colloquialStmt.iterate(wordId),
+    (entry) => entry.羅馬字 as string,
+    // this is a convention for denoting multiple alternatives
+  ).flatMap((str) => str.split("/"));
+  const alternative = collect(
+    alternativeStmt.iterate(wordId),
+    (entry) => entry.羅馬字 as string,
+  ).flatMap((str) => str.split("/"));
+  const otherMerged = collect(
+    otherMergedStmt.iterate(wordId),
+    (entry) => entry.羅馬字 as string,
+  ).flatMap((str) => str.split("/"));
+  return {
     id: inputWord.詞目id,
     type: inputWord.詞目類型,
     han: inputWord.漢字,
     categories: inputWord.分類,
     tl: inputWord.羅馬字,
+    other: {
+      colloquial: colloquial,
+      alternative: alternative,
+      otherMerged: otherMerged,
+    },
     羅馬字音檔檔名: inputWord.羅馬字音檔檔名,
     heteronyms: hets,
-  });
-}
+  } as OutputWord;
+});

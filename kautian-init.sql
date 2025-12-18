@@ -164,3 +164,6 @@ CREATE TABLE IF NOT EXISTS "語音差異" (
 .import '原始資料/kautian-語音差異.csv' 語音差異 --skip 1
 
 create index idx_義項 on 義項(詞目id);
+create index idx_俗唸作 on 俗唸作(詞目id);
+create index idx_又唸作 on 又唸作(詞目id);
+create index idx_合音唸作 on 合音唸作(詞目id);
