@@ -1,7 +1,18 @@
 .mode csv
 
+CREATE TABLE IF NOT EXISTS "例句" (
+    "詞目id" integer,
+    "義項id" integer,
+    "例句順序" integer,
+    "漢字" text,
+    "羅馬字" text,
+    "華語" text,
+    "音檔檔名" text,
+    primary key ("詞目id", "義項id", "例句順序")
+);
+.import '原始資料/kautian-例句.csv' 例句 --skip 1
+
 -- TODO: create the tables ourselves to encode primary key and foreign key relations
-.import '原始資料/kautian-例句.csv' 例句
 .import '原始資料/kautian-俗唸作.csv' 俗唸作
 .import '原始資料/kautian-又唸作.csv' 又唸作
 .import '原始資料/kautian-合音唸作.csv' 合音唸作
