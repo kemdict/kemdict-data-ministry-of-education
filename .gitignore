@@ -3,3 +3,5 @@
 # *.xlsx
 # *.xls
 node_modules
+
+kautian.db
