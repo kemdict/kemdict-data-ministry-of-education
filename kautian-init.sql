@@ -162,3 +162,5 @@ CREATE TABLE IF NOT EXISTS "語音差異" (
     "臺中偏漳腔" text
 );
 .import '原始資料/kautian-語音差異.csv' 語音差異 --skip 1
+
+create index idx_義項 on 義項(詞目id);
