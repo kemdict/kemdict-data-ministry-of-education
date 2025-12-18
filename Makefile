@@ -16,10 +16,8 @@
 ifneq (,$(shell command -v libreoffice))
 # We add the semicolon so it's possible / simpler to use foreach
 convert = libreoffice "--infilter=CSV:44,34,76,1" --convert-to csv --outdir "原始資料" "$(1)";
-else ifneq (,$(shell command -v in2csv))
-convert = in2csv "$(1)" > "$(basename $(1)).csv"
 else
-$(error "libreoffice or in2csv (from csvkit) not found")
+$(error "libreoffice not found")
 endif
 
 # hakkadict.json: $(wildcard 原始資料/hakkadict*.ods)
