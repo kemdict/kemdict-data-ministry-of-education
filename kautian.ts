@@ -1,6 +1,30 @@
+// -*- lsp-disabled-clients: (ts-ls); -*-
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
 import { z } from "zod";
+import { cached } from "@kisaragi-hiu/cached-fetch";
+import { DOMParser } from "@b-fuze/deno-dom";
+
+// No idea why these aren't in the ODS. Sorry for relying on scraping.
+const categoriesDOM = new DOMParser().parseFromString(
+  await cached("kautian-categories", () =>
+    fetch("https://sutian.moe.edu.tw/zh-hant/hunlui/", {
+      headers: { "User-Agent": "Kemdict (Kisaragi Hiu)" },
+    }),
+  ),
+  "text/html",
+);
+const categories = Object.fromEntries(
+  [...categoriesDOM.querySelectorAll("nav > ul > li > a")]
+    .map((elem) => {
+      const href = elem.getAttribute("href");
+      if (!href || href.startsWith("#")) return;
+      const match = href.match(/(\d+)\/$/);
+      if (!match) return;
+      return [elem.textContent.trim(), parseInt(match[1])] as [string, number];
+    })
+    .filter((elem) => elem !== undefined),
+);
 
 // This schema parses both files from moedict-data-twblg.
 const heteronym = z.object({
@@ -87,8 +111,12 @@ interface OutputWord {
   other: {
     colloquial: string[];
     alternative: string[];
+    otherMerged: string[];
   };
-  categories: string[];
+  categories: Array<{
+    id?: number;
+    title: string;
+  }>;
   heteronyms: Array<OutputHet>;
   羅馬字音檔檔名: string;
 }
@@ -124,7 +152,7 @@ const words = collect(wordsStmt.iterate(), (word) => {
       id: inputHet.義項id,
       def: inputHet.解說,
       pos: inputHet.詞性,
-    } as OutputHet;
+    } satisfies OutputHet;
   });
   const colloquial = collect(
     colloquialStmt.iterate(wordId),
@@ -143,7 +171,10 @@ const words = collect(wordsStmt.iterate(), (word) => {
     id: inputWord.詞目id,
     type: inputWord.詞目類型,
     han: inputWord.漢字,
-    categories: inputWord.分類,
+    categories: inputWord.分類.map((category) => ({
+      id: categories[category],
+      title: category,
+    })),
     tl: inputWord.羅馬字,
     other: {
       colloquial: colloquial,
@@ -152,5 +183,5 @@ const words = collect(wordsStmt.iterate(), (word) => {
     },
     羅馬字音檔檔名: inputWord.羅馬字音檔檔名,
     heteronyms: hets,
-  } as OutputWord;
+  } satisfies OutputWord;
 });
