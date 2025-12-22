@@ -32,6 +32,7 @@ endif
 kautian.db: 原始資料/kautian-20251219.ods
 	$(call convert,$<)
 	rename kautian-20251219 kautian 原始資料/kautian*.csv
+	[[ -f kautian.db ]] && rm kautian.db || true
 	sqlite3 kautian.db < kautian-init.sql
 
 kautian.json: kautian.db
