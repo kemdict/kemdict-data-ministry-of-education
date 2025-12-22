@@ -101,7 +101,7 @@ interface OutputHet {
     zh: string;
   }>;
 }
-interface OutputWord {
+export interface OutputWord {
   id: number;
   type:
     | "主詞目"
