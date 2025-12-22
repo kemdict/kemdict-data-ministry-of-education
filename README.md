@@ -26,9 +26,9 @@
     for variant in 四縣腔 海陸腔 大埔腔 饒平腔 詔安腔 南四縣腔; do
         curl https://hakkadict.moe.edu.tw/static/resource/客語資源下載/本辭典的文字/"$variant"詞條詞目文字.ods \
             > hakkadict_"$variant"_"$date".ods
-done
-
+    done
     ```
+
     - 也應該要改用《教育部臺灣閩南語常用詞辭典》[新版的資料釋出](https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2)
 - 安裝 Node、npm、LibreOffice
 - `npm install`
