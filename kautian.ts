@@ -115,8 +115,11 @@ interface OutputWord {
   };
   tl: {
     main: string;
+    // 俗唸作
     colloquial: string[];
+    // 又唸作
     alt: string[];
+    // 合音唸作
     otherMerged: string[];
   };
   categories: Array<{
