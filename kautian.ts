@@ -109,12 +109,16 @@ interface OutputWord {
     | "近反義詞不單列詞目者"
     | "臺華共同詞"
     | "附錄";
-  title: string;
-  alternativeHan: string[];
-  tl: string;
-  pnColloquial: string[];
-  pnAlternative: string[];
-  pnOtherMerged: string[];
+  han: {
+    main: string;
+    alt: string[];
+  };
+  tl: {
+    main: string;
+    colloquial: string[];
+    alt: string[];
+    otherMerged: string[];
+  };
   categories: Array<{
     id?: number;
     title: string;
@@ -202,10 +206,16 @@ const words = collect(wordsStmt.iterate(), (word) => {
       id: categories[category],
       title: category,
     })),
-    tl: inputWord.羅馬字,
-    pnColloquial: colloquial,
-    pnAlternative: alternative,
-    pnOtherMerged: otherMerged,
+    han: {
+      main: inputWord.漢字,
+      alt: alternativeHan,
+    },
+    tl: {
+      main: inputWord.羅馬字,
+      colloquial,
+      alt: alternative,
+      otherMerged: otherMerged,
+    },
     heteronyms: hets,
   } satisfies OutputWord;
 });
