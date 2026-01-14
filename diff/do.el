@@ -62,15 +62,20 @@ The output file is named
                 (if (eql flag ?-)
                     (ordered-set-add removed title)
                   (ordered-set-add added title))))))))
-    ;; (with-temp-file (format "%s - %s-%s - modified.json" dict old-version new-version)
-    ;;   (insert
-    ;;    (json-serialize (seq-into (seq-intersection added removed) 'vector))))
-    (with-temp-file (format "%s - %s-%s - added.json" dict old-version new-version)
-      (insert
-       (json-serialize (seq-into (seq-difference added removed) 'vector))))
-    (with-temp-file (format "%s - %s-%s - removed.json" dict old-version new-version)
-      (insert
-       (json-serialize (seq-into (seq-difference removed added) 'vector))))))
+    ;; For some reason it sometimes asks. I can't give a better answer than the
+    ;; default, so just accept it.
+    (cl-letf (((symbol-function #'read-coding-system)
+               (lambda (_prompt &optional default)
+                 default)))
+      ;; (with-temp-file (format "%s - %s-%s - modified.json" dict old-version new-version)
+      ;;   (insert
+      ;;    (json-serialize (seq-into (seq-intersection added removed) 'vector))))
+      (with-temp-file (format "%s - %s-%s - added.json" dict old-version new-version)
+        (insert
+         (json-serialize (seq-into (seq-difference added removed) 'vector))))
+      (with-temp-file (format "%s - %s-%s - removed.json" dict old-version new-version)
+        (insert
+         (json-serialize (seq-into (seq-difference removed added) 'vector)))))))
 
 (defun d:main ()
   "Main function."
