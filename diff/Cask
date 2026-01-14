@@ -1,1 +1,0 @@
-(depends-on "ordered-set" :git "https://github.com/kisaragi-hiu/ordered-set.el")

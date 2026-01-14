@@ -66,5 +66,6 @@ all: dict_revised.json dict_concised.json dict_idioms.json dict_mini.json hakkad
 
 .PHONY: diff
 diff:
-	cd diff && cask install
-	cd diff && emacs -Q --script do.el
+	cd diff && eask install-deps
+	# using --script fails to add dependencies to the load-path for some reason
+	cd diff && eask emacs --batch --load do.el

@@ -1,0 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
+(package "shut-the-fuck-up" "1.0.0" "SHUT THE FUCK UP ABOUT THIS NON-PACKAGE NOT HAVING A DESCRIPTION")
+(source "melpa")
+(depends-on "ordered-set")
