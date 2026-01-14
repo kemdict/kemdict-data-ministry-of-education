@@ -29,10 +29,12 @@
     done
     ```
 
-    - 也應該要改用《教育部臺灣閩南語常用詞辭典》[新版的資料釋出](https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2)
+    - 
+  - 《教育部臺灣台語常用詞辭典》[資料釋出](https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2)
 - 安裝 Node、npm、LibreOffice
-- `npm install`
-- 取代舊的檔案之後 `make all`
+- `npm install` (for `csvtojson`)
+- 到 `./原始資料`，檢查後把舊的檔案刪掉
+- 然後 `make all`
 
 如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
 
@@ -48,10 +50,10 @@
 
 轉換用程式碼與編輯的著作權（如果有的話）由如月飛羽 (Kisaragi Hiu) 以 [CC0](https://creativecommons.org/publicdomain/zero/1.0/legalcode) 釋出。
 
-- 中華民國教育部（Ministry of Education, R.O.C.）。《重編國語辭典修訂本》（版本編號： 2015_20241225）網址：http://dict.revised.moe.edu.tw/
-- 中華民國教育部（Ministry of Education, R.O.C.）。《國語辭典簡編本》（版本編號：2014_20241226）網址：http://dict.concised.moe.edu.tw/
-- 中華民國教育部（Ministry of Education, R.O.C.）。《成語典》（版本編號：2020_20241226）網址：http://dict.idioms.moe.edu.tw/
-- 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》（版本編號：2019_20241223）網址：http://dict.mini.moe.edu.tw
+- 中華民國教育部（Ministry of Education, R.O.C.）。《重編國語辭典修訂本》網址：http://dict.revised.moe.edu.tw/
+- 中華民國教育部（Ministry of Education, R.O.C.）。《國語辭典簡編本》網址：http://dict.concised.moe.edu.tw/
+- 中華民國教育部（Ministry of Education, R.O.C.）。《成語典》網址：http://dict.idioms.moe.edu.tw/
+- 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》網址：http://dict.mini.moe.edu.tw
 - 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣客語辭典》（取用於 2024 年 5 月 15 日）網址：https://hakkadict.moe.edu.tw
 - 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣台語常用詞辭典》（取用於 2025 年 12 月 19 日）網址：https://sutian.moe.edu.tw
 

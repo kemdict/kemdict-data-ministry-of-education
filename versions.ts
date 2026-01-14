@@ -11,8 +11,8 @@
 // gets rewritten in JS at some point.
 // prettier-ignore
 export const dicts = {
-  dict_concised: { current: "2014_20250326", previous: "2014_20241226" },
-  dict_idioms:   { current: "2020_20250324", previous: "2020_20241226" },
-  dict_mini:     { current: "2019_20250328", previous: "2019_20241223" },
-  dict_revised:  { current: "2015_20250327", previous: "2015_20241225" },
-};
+  dict_concised: { current: "2014_20251229", previous: "2014_20250326" },
+  dict_idioms:   { current: "2020_20251224", previous: "2020_20250324" },
+  dict_mini:     { current: "2019_20251229", previous: "2019_20250328" },
+  dict_revised:  { current: "2015_20251229", previous: "2015_20250327" },
+} satisfies Record<string, { current: string, previous: string }>;
