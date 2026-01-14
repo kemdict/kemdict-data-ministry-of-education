@@ -1,8 +1,8 @@
 // Dictionaries from Ministry of Education, plus their current versions and
 // previous versions.
 //
-// Previous versions are used by the diff generation process.
-// That process currently parses this in an ad-hoc way, so:
+// Previous versions are used by the diff generation process, "parsing" this
+// file with Emacs Lisp, so:
 // - the newlines here are sensitive: each dict should be in one line.
 // - the variable name/type is also sensitive. It has to be "const dicts".
 // - the order is sensitive: current must come before previous
