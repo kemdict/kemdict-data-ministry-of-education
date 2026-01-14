@@ -38,7 +38,7 @@
 
 如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
 
-- `make diff`
+- `make diff` (make sure the working copy has the new files and HEAD has the old files)
 
 這樣會產生前後的差異比對結果。Now make a commit and push.
 

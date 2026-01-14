@@ -1,5 +1,4 @@
 *.csv
-!dict_concised*.csv
 # *.xlsx
 # *.xls
 node_modules
