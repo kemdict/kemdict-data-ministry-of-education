@@ -56,6 +56,10 @@ const categories = Object.fromEntries(
 
 const db = new DatabaseSync("kautian.db", { readOnly: true });
 
+const kautianWordSynoAnto = z.object({
+  對應詞目id: z.number(),
+  對應詞目漢字: z.string(),
+});
 const kautianWord = z.object({
   詞目id: z.number(),
   詞目類型: z.enum([
@@ -126,6 +130,14 @@ export interface OutputWord {
     id?: number;
     title: string;
   }>;
+  wwAntonyms: Array<{
+    id: number;
+    han: string;
+  }>
+  wwSynonyms: Array<{
+    id: number;
+    han: string;
+  }>
   heteronyms: Array<OutputHet>;
 }
 
@@ -142,6 +154,12 @@ function collect<T, Ret>(iter: IterableIterator<T>, body: (input: T) => Ret) {
 }
 
 const wordsStmt = db.prepare("select * from 詞目");
+const wordAntoymsStmt = db.prepare(`
+  select * from "詞目tuì詞目反義" where 詞目id = ?
+`);
+const wordSynonymsStmt = db.prepare(`
+  select * from "詞目tuì詞目近義" where 詞目id = ?
+`);
 // this is fine-ish because we've have an index for 義項(詞目id)
 const hetsStmt = db.prepare("select * from 義項 where 詞目id = ?");
 const colloquialStmt = db.prepare("select 羅馬字 from 俗唸作 where 詞目id = ?");
@@ -163,6 +181,14 @@ const examplesStmt = db.prepare(`
 const words = collect(wordsStmt.iterate(), (word) => {
   const inputWord = kautianWord.parse(word);
   const wordId = inputWord.詞目id;
+  const wordSynonyms = collect(wordSynonymsStmt.iterate(wordId), (syn) => {
+    const inputSyn = kautianWordSynoAnto.parse(syn);
+    return { id: inputSyn.對應詞目id, han: inputSyn.對應詞目漢字 };
+  });
+  const wordAntonyms = collect(wordAntonymsStmt.iterate(wordId), (syn) => {
+    const inputAnto = kautianWordSynoAnto.parse(syn);
+    return { id: inputAnto.對應詞目id, han: inputAnto.對應詞目漢字 };
+  });
   const hets = collect(hetsStmt.iterate(wordId), (het) => {
     const inputHet = kautianHet.parse(het);
     const examples = collect(
@@ -217,6 +243,8 @@ const words = collect(wordsStmt.iterate(), (word) => {
       alt: alternative,
       otherMerged: otherMerged,
     },
+    wwAntonyms: wordAntoyms,
+    wwSynonyms: wordSynonyms,
     heteronyms: hets,
   } satisfies OutputWord;
 });
