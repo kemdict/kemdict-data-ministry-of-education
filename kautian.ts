@@ -104,6 +104,10 @@ interface OutputHet {
     tl: string;
     zh: string;
   }>;
+  hwAntonyms: number[];
+  hwSynonyms: number[];
+  hhAntonyms: number[];
+  hhSynonyms: number[];
 }
 export interface OutputWord {
   id: number;
