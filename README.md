@@ -233,7 +233,7 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 - [X] 詞目tuì詞目反義
 - [X] 詞目tuì詞目近義
 - [ ] 詞彙比較
-- [ ] 語音差異
+- [X] 語音差異
 
 Schema:
 
@@ -246,6 +246,8 @@ interface OutputWord {
   id: number;
   // 詞目類型
   type: "主詞目" | "單字不成詞者" | "近反義詞不單列詞目者" | "臺華共同詞" | "附錄";
+  // 語音差異：腔調 → 羅馬字陣列
+  dialects?: Record<string, string[]>;
   // 漢字...
   han: {
     // 「主要」漢字

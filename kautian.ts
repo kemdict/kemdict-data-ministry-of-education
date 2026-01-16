@@ -69,6 +69,19 @@ interface OutputWordRef {
   id: number;
   han: string;
 }
+const inputDialects = z.object({
+  鹿港偏泉腔: z.optional(z.string().transform((str) => str.split(","))),
+  三峽偏泉腔: z.optional(z.string().transform((str) => str.split(","))),
+  臺北偏泉腔: z.optional(z.string().transform((str) => str.split(","))),
+  宜蘭偏漳腔: z.optional(z.string().transform((str) => str.split(","))),
+  臺南混合腔: z.optional(z.string().transform((str) => str.split(","))),
+  高雄混合腔: z.optional(z.string().transform((str) => str.split(","))),
+  金門偏泉腔: z.optional(z.string().transform((str) => str.split(","))),
+  馬公偏泉腔: z.optional(z.string().transform((str) => str.split(","))),
+  新竹偏泉腔: z.optional(z.string().transform((str) => str.split(","))),
+  臺中偏漳腔: z.optional(z.string().transform((str) => str.split(","))),
+});
+type OutputDialects = z.infer<typeof inputDialects>;
 /** Het-to-Het synonym or antonym */
 const inputHetRef = z.object({
   對應義項id: z.number(),
@@ -137,6 +150,7 @@ export interface OutputWord {
     | "近反義詞不單列詞目者"
     | "臺華共同詞"
     | "附錄";
+  dialects?: OutputDialects;
   han: {
     main: string;
     alt?: string[];
@@ -159,12 +173,29 @@ export interface OutputWord {
   heteronyms?: Array<OutputHet>;
 }
 
-/** Remove keys whose values are empty arrays in `obj` to save space. */
+/**
+ * Remove keys whose values are empty in `obj` to save space.
+ * This handles empty arrays, empty objects, null, or undefined.
+ *
+ * Empty strings are not handled because that requires more changes that I don't
+ * want to make right now.
+ */
 function trim<T extends object>(obj: T): T {
   for (const key of Object.keys(obj)) {
     const value = (obj as Record<string, unknown>)[key];
-    if (Array.isArray(value) && value.length === 0) {
-      delete (obj as Record<string, unknown>)[key];
+    if (Array.isArray(value)) {
+      if (value.length === 0) {
+        delete (obj as Record<string, unknown>)[key];
+      }
+    } else {
+      // not an array
+      if (
+        value === null ||
+        value === undefined ||
+        (typeof value === "object" && Object.keys(value).length === 0)
+      ) {
+        delete (obj as Record<string, unknown>)[key];
+      }
     }
   }
   return obj;
@@ -189,6 +220,7 @@ const wordAntonymsStmt = db.prepare(`
 const wordSynonymsStmt = db.prepare(`
   select * from "詞目tuì詞目近義" where 詞目id = ?
 `);
+const wordDialectsStmt = db.prepare(`select * from 語音差異 where 詞目id = ?`);
 // this is fine-ish because we've have an index for 義項(詞目id)
 const hetsStmt = db.prepare("select * from 義項 where 詞目id = ?");
 const hwAntonymsStmt = db.prepare(
@@ -230,6 +262,15 @@ const words = collect(wordsStmt.iterate(), (it) => {
     const antonym = inputWordRef.parse(it);
     return { id: antonym.對應詞目id, han: antonym.對應詞目漢字 };
   });
+  const dialects = collect(wordDialectsStmt.iterate(wordId), (it) => {
+    return trim(inputDialects.parse(it));
+  });
+  if (dialects.length > 1) {
+    console.log(
+      `Error: word id ${wordId} has more than one entry in 語音差異. This should never happen!`,
+    );
+    process.exit(1);
+  }
   const hets = collect(hetsStmt.iterate(wordId), (it) => {
     const het = inputHet.parse(it);
     const hetId = het.義項id;
@@ -300,6 +341,7 @@ const words = collect(wordsStmt.iterate(), (it) => {
   return trim({
     id: word.詞目id,
     type: word.詞目類型,
+    dialects: dialects[0],
     categories: word.分類.map((category) => ({
       id: categories[category],
       title: category,
