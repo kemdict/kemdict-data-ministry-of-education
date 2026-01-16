@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS "詞彙比較" (
 .import '原始資料/kautian-詞彙比較.csv' 詞彙比較 --skip 1
 
 CREATE TABLE IF NOT EXISTS "語音差異" (
-    "詞目id" integer references 詞目("詞目id"),
+    "詞目id" integer primary key references 詞目("詞目id"),
     "漢字" text,
     "鹿港偏泉腔" text,
     "三峽偏泉腔" text,
