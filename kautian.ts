@@ -81,7 +81,7 @@ const inputDialects = z.object({
   新竹偏泉腔: z.optional(z.string().transform((str) => str.split(","))),
   臺中偏漳腔: z.optional(z.string().transform((str) => str.split(","))),
 });
-type OutputDialects = z.infer<typeof inputDialects>;
+type OutputDialects = Record<string, string[]>;
 /** Het-to-Het synonym or antonym */
 const inputHetRef = z.object({
   對應義項id: z.number(),
@@ -150,7 +150,6 @@ export interface OutputWord {
     | "近反義詞不單列詞目者"
     | "臺華共同詞"
     | "附錄";
-  dialects?: OutputDialects;
   han: {
     main: string;
     alt?: string[];
@@ -163,6 +162,8 @@ export interface OutputWord {
     alt?: string[];
     // 合音唸作
     otherMerged?: string[];
+    // 語音差異
+    dialects?: OutputDialects;
   };
   categories: Array<{
     id?: number;
@@ -341,7 +342,6 @@ const words = collect(wordsStmt.iterate(), (it) => {
   return trim({
     id: word.詞目id,
     type: word.詞目類型,
-    dialects: dialects[0],
     categories: word.分類.map((category) => ({
       id: categories[category],
       title: category,
@@ -355,6 +355,7 @@ const words = collect(wordsStmt.iterate(), (it) => {
       colloquial,
       alt: alternative,
       otherMerged: otherMerged,
+      dialects: dialects[0],
     }),
     wwAntonyms: wordAntonyms,
     wwSynonyms: wordSynonyms,

@@ -246,8 +246,6 @@ interface OutputWord {
   id: number;
   // 詞目類型
   type: "主詞目" | "單字不成詞者" | "近反義詞不單列詞目者" | "臺華共同詞" | "附錄";
-  // 語音差異：腔調 → 羅馬字陣列
-  dialects?: Record<string, string[]>;
   // 漢字...
   han: {
     // 「主要」漢字
@@ -265,6 +263,8 @@ interface OutputWord {
     alt?: string[];
     // 合音唸作
     otherMerged?: string[];
+    // 語音差異，像是 {"臺中偏漳腔": ["ji̍t","gi̍t"]}
+    dialects?: Record<string, string[]>;
   };
   // 分類
   categories: Array<{
