@@ -56,9 +56,22 @@ const categories = Object.fromEntries(
 
 const db = new DatabaseSync("kautian.db", { readOnly: true });
 
-const kautianWordSynoAnto = z.object({
+/** Word-to-Word synonym or antonym */
+const kautianWWSynoAnto = z.object({
   對應詞目id: z.number(),
   對應詞目漢字: z.string(),
+});
+/** Het-to-Word synonym or antonym */
+const kautianHWSynoAnto = z.object({
+  對應詞目id: z.number(),
+  對應詞目漢字: z.string(),
+});
+/** Het-to-Het synonym or antonym */
+const kautianHHSynoAnto = z.object({
+  解說: z.string(),
+  對應義項id: z.number(),
+  對應詞目漢字: z.string(),
+  對應解說: z.string(),
 });
 const kautianWord = z.object({
   詞目id: z.number(),
@@ -104,7 +117,12 @@ interface OutputHet {
     tl: string;
     zh: string;
   }>;
-  hwAntonyms?: number[];
+  hwAntonyms?: Array<
+    {
+      desc: string,
+      id
+    }
+  >;
   hwSynonyms?: number[];
   hhAntonyms?: number[];
   hhSynonyms?: number[];
@@ -177,6 +195,12 @@ const wordSynonymsStmt = db.prepare(`
 `);
 // this is fine-ish because we've have an index for 義項(詞目id)
 const hetsStmt = db.prepare("select * from 義項 where 詞目id = ?");
+const hwAntonymsStmt = db.prepare(`
+  select * from "義項tuì詞目反義" where 義項id = ?
+`);
+const hwSynonymsStmt = db.prepare(`
+  select * from "義項tuì詞目近義" where 義項id = ?
+`);
 const colloquialStmt = db.prepare("select 羅馬字 from 俗唸作 where 詞目id = ?");
 const alternativeStmt = db.prepare(
   "select 羅馬字 from 又唸作 where 詞目id = ?",
@@ -196,27 +220,29 @@ const examplesStmt = db.prepare(`
 const words = collect(wordsStmt.iterate(), (word) => {
   const inputWord = kautianWord.parse(word);
   const wordId = inputWord.詞目id;
-  const wordSynonyms = collect(wordSynonymsStmt.iterate(wordId), (syn) => {
-    const inputSyn = kautianWordSynoAnto.parse(syn);
-    return { id: inputSyn.對應詞目id, han: inputSyn.對應詞目漢字 };
+  const wordSynonyms = collect(wordSynonymsStmt.iterate(wordId), (it) => {
+    const synonym = kautianWWSynoAnto.parse(it);
+    return { id: synonym.對應詞目id, han: synonym.對應詞目漢字 };
   });
-  const wordAntonyms = collect(wordAntonymsStmt.iterate(wordId), (syn) => {
-    const inputAnto = kautianWordSynoAnto.parse(syn);
-    return { id: inputAnto.對應詞目id, han: inputAnto.對應詞目漢字 };
+  const wordAntonyms = collect(wordAntonymsStmt.iterate(wordId), (it) => {
+    const antonym = kautianWWSynoAnto.parse(it);
+    return { id: antonym.對應詞目id, han: antonym.對應詞目漢字 };
   });
   const hets = collect(hetsStmt.iterate(wordId), (het) => {
     const inputHet = kautianHet.parse(het);
-    const examples = collect(
-      examplesStmt.iterate(inputHet.義項id),
-      (example) => {
-        const inputExample = kautianExample.parse(example);
-        return {
-          han: inputExample.漢字,
-          tl: inputExample.羅馬字,
-          zh: inputExample.華語,
-        };
-      },
-    );
+    const hetId = inputHet.義項id;
+    const examples = collect(examplesStmt.iterate(hetId), (example) => {
+      const inputExample = kautianExample.parse(example);
+      return {
+        han: inputExample.漢字,
+        tl: inputExample.羅馬字,
+        zh: inputExample.華語,
+      };
+    });
+    const hwAntonyms = collect(hwAntonymsStmt.iterate(hetId), (it) => {
+      const antonym = kautianHWSynoAnto.parse(it);
+      return {};
+    });
     return trim({
       id: inputHet.義項id,
       def: inputHet.解說,
