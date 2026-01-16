@@ -15,6 +15,7 @@ const categoriesDOM = new DOMParser().parseFromString(
   ),
   "text/html",
 );
+/** This is a Record<CategoryName, Id>. */
 const categories = Object.fromEntries(
   [...categoriesDOM.querySelectorAll("nav > ul > li > a")]
     .map((elem) => {
@@ -64,6 +65,10 @@ const inputWordRef = z.object({
   對應詞目id: z.number(),
   對應詞目漢字: z.string(),
 });
+interface OutputWordRef {
+  id: number;
+  han: string;
+}
 /** Het-to-Het synonym or antonym */
 const inputHHSynoAnto = z.object({
   對應義項id: z.number(),
@@ -101,6 +106,11 @@ const inputExample = z.object({
   華語: z.string(),
   音檔檔名: z.string(),
 });
+interface OutputExample {
+  han: string;
+  tl: string;
+  zh: string;
+}
 interface OutputHet {
   id: number;
   // prettier-ignore
@@ -109,16 +119,9 @@ interface OutputHet {
     | "代詞" | "量詞" | "方位詞" | "連詞" | "介詞" | "嘆詞" | "擬聲詞"
     | "疑問詞" | "擬態詞" | "助動詞" | undefined;
   def: string;
-  examples?: Array<{
-    han: string;
-    tl: string;
-    zh: string;
-  }>;
-  hwAntonyms?: Array<{
-    desc: string;
-    id;
-  }>;
-  hwSynonyms?: number[];
+  examples?: Array<OutputExample>;
+  hwAntonyms?: Array<OutputWordRef>;
+  hwSynonyms?: Array<OutputWordRef>;
   hhAntonyms?: number[];
   hhSynonyms?: number[];
 }
@@ -147,14 +150,8 @@ export interface OutputWord {
     id?: number;
     title: string;
   }>;
-  wwAntonyms?: Array<{
-    id: number;
-    han: string;
-  }>;
-  wwSynonyms?: Array<{
-    id: number;
-    han: string;
-  }>;
+  wwAntonyms?: Array<OutputWordRef>;
+  wwSynonyms?: Array<OutputWordRef>;
   heteronyms?: Array<OutputHet>;
 }
 
