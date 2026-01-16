@@ -169,3 +169,6 @@ create index idx_又唸作 on 又唸作(詞目id);
 create index idx_合音唸作 on 合音唸作(詞目id);
 create index idx_例句 on 例句(義項id);
 create index idx_異用字 on 異用字(詞目id);
+
+create index idx_wwAntonyms on 詞目tuì詞目反義(詞目id);
+create index idx_wwSynonyms on 詞目tuì詞目近義(詞目id);
