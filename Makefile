@@ -44,7 +44,7 @@ kautian.json: kautian.db
 stti-hakka.json: $(wildcard 原始資料/stti-hakka-*.ods)
 	$(call convertOne,$<)
 	npx csvtojson $(basename $<).csv --noheader=false --ignoreColumns='/階段|foo/' --headers='["id","zh","def","第1階段","第2階段","第3階段","第4階段","第5階段","四縣詞彙","四縣音讀","南四縣詞彙","南四縣音讀","海陸詞彙","海陸音讀","大埔詞彙","大埔音讀","饒平詞彙","饒平音讀","饒平腔備註詞彙_卓蘭","饒平腔備註音讀_卓蘭","詔安詞彙","詔安音讀"]' > "$@"
-stti-ttg.json: $(wildcard 原始資料/stti-ttg-*.ods)
+stti-taigi.json: $(wildcard 原始資料/stti-ttg-*.ods)
 	$(call convertOne,$<)
 	npx csvtojson $(basename $<).csv --noheader=false --ignoreColumns='/階段|foo/' --headers='["id","zh","def","第1階段","第2階段","第3階段","第4階段","第5階段","han","tl"]' > "$@"
 

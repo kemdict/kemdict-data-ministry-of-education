@@ -14,7 +14,7 @@
 - `dict_mini`: 國語小字典
 - `hakkadict`: 臺灣客家語常用詞辭典
 - `kautian`: 臺灣台語常用詞辭典
-- `stti-ttg`: 學科術語對譯查詢（台語）
+- `stti-taigi`: 學科術語對譯查詢（台語）
 - `stti-hakka`: 學科術語對譯查詢（客語）
 
 原始資料在`./原始資料`這個資料夾下，這些 JSON 檔案是以下流程生成的檔案。
@@ -218,7 +218,7 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 | 相反詞       | antonyms        |                |
 | 對應音檔名稱 | audio_file_name |                |
 
-### `stti-ttg.json`
+### `stti-taigi.json`
 
 | Original     | Here | Notes                         |
 |--------------+------+-------------------------------|
