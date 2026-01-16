@@ -99,15 +99,15 @@ interface OutputHet {
     | "代詞" | "量詞" | "方位詞" | "連詞" | "介詞" | "嘆詞" | "擬聲詞"
     | "疑問詞" | "擬態詞" | "助動詞" | undefined;
   def: string;
-  examples: Array<{
+  examples?: Array<{
     han: string;
     tl: string;
     zh: string;
   }>;
-  hwAntonyms: number[];
-  hwSynonyms: number[];
-  hhAntonyms: number[];
-  hhSynonyms: number[];
+  hwAntonyms?: number[];
+  hwSynonyms?: number[];
+  hhAntonyms?: number[];
+  hhSynonyms?: number[];
 }
 export interface OutputWord {
   id: number;
@@ -119,30 +119,41 @@ export interface OutputWord {
     | "附錄";
   han: {
     main: string;
-    alt: string[];
+    alt?: string[];
   };
   tl: {
     main: string;
     // 俗唸作
-    colloquial: string[];
+    colloquial?: string[];
     // 又唸作
-    alt: string[];
+    alt?: string[];
     // 合音唸作
-    otherMerged: string[];
+    otherMerged?: string[];
   };
   categories: Array<{
     id?: number;
     title: string;
   }>;
-  wwAntonyms: Array<{
+  wwAntonyms?: Array<{
     id: number;
     han: string;
-  }>
-  wwSynonyms: Array<{
+  }>;
+  wwSynonyms?: Array<{
     id: number;
     han: string;
-  }>
-  heteronyms: Array<OutputHet>;
+  }>;
+  heteronyms?: Array<OutputHet>;
+}
+
+/** Remove keys whose values are empty arrays in `obj` to save space. */
+function trim<T extends object>(obj: T): T {
+  for (const key of Object.keys(obj)) {
+    const value = (obj as Record<string, unknown>)[key];
+    if (Array.isArray(value) && value.length === 0) {
+      delete (obj as Record<string, unknown>)[key];
+    }
+  }
+  return obj;
 }
 
 /**
@@ -206,12 +217,12 @@ const words = collect(wordsStmt.iterate(), (word) => {
         };
       },
     );
-    return {
+    return trim({
       id: inputHet.義項id,
       def: inputHet.解說,
       pos: inputHet.詞性,
       examples: examples,
-    } satisfies OutputHet;
+    } satisfies OutputHet);
   });
   const colloquial = collect(
     colloquialStmt.iterate(wordId),
@@ -230,27 +241,27 @@ const words = collect(wordsStmt.iterate(), (word) => {
     alternativeHanStmt.iterate(wordId),
     (entry) => entry.異用字 as string,
   );
-  return {
+  return trim({
     id: inputWord.詞目id,
     type: inputWord.詞目類型,
     categories: inputWord.分類.map((category) => ({
       id: categories[category],
       title: category,
     })),
-    han: {
+    han: trim({
       main: inputWord.漢字,
       alt: alternativeHan,
-    },
-    tl: {
+    }),
+    tl: trim({
       main: inputWord.羅馬字,
       colloquial,
       alt: alternative,
       otherMerged: otherMerged,
-    },
+    }),
     wwAntonyms: wordAntonyms,
     wwSynonyms: wordSynonyms,
     heteronyms: hets,
-  } satisfies OutputWord;
+  } satisfies OutputWord);
 });
 
 if (process.argv[2]) {
