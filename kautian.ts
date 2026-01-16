@@ -233,13 +233,25 @@ const words = collect(wordsStmt.iterate(), (it) => {
     });
     const hwAntonyms = collect(hwAntonymsStmt.iterate(hetId), (it) => {
       const antonym = inputWordRef.parse(it);
-      return {};
+      return {
+        id: antonym.對應詞目id,
+        han: antonym.對應詞目漢字,
+      };
+    });
+    const hwSynonyms = collect(hwSynonymsStmt.iterate(hetId), (it) => {
+      const synonym = inputWordRef.parse(it);
+      return {
+        id: synonym.對應詞目id,
+        han: synonym.對應詞目漢字,
+      };
     });
     return trim({
       id: het.義項id,
       def: het.解說,
       pos: het.詞性,
       examples: examples,
+      hwAntonyms: hwAntonyms,
+      hwSynonyms: hwSynonyms,
     } satisfies OutputHet);
   });
   const colloquial = collect(
