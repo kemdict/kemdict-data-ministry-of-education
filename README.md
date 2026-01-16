@@ -234,3 +234,91 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 - [X] 詞目tuì詞目近義
 - [ ] 詞彙比較
 - [ ] 語音差異
+
+Schema:
+
+kautian.json 是 `Array<OutputWord>`。
+
+```typescript
+// 詞目
+interface OutputWord {
+  // 詞目id
+  id: number;
+  // 詞目類型
+  type: "主詞目" | "單字不成詞者" | "近反義詞不單列詞目者" | "臺華共同詞" | "附錄";
+  // 漢字...
+  han: {
+    // 「主要」漢字
+    main: string;
+    // 異用字
+    alt?: string[];
+  };
+  // 羅馬字...
+  tl: {
+    // 「主要」羅馬字
+    main: string;
+    // 俗唸作
+    colloquial?: string[];
+    // 又唸作
+    alt?: string[];
+    // 合音唸作
+    otherMerged?: string[];
+  };
+  // 分類
+  categories: Array<{
+    // 分類在教典上的id
+    id?: number;
+    // 分類名稱
+    title: string;
+  }>;
+  // 詞目對詞目反義
+  wwAntonyms?: Array<{
+    id: number; // 對應詞目id
+    han: string; // 對應詞目漢字
+  }>;
+  // 詞目對詞目近義
+  wwSynonyms?: Array<{
+    id: number; // 對應詞目id
+    han: string; // 對應詞目漢字
+  }>;
+  // 詞目的義項
+  heteronyms?: Array<OutputHet>;
+};
+
+// 義項
+interface OutputHet {
+  // 教典的義項id
+  id: number;
+  // prettier-ignore
+  pos:
+    | "數詞" | "形容詞" | "副詞" | "熟語" | "助詞" | "時間詞" | "名詞" | "動詞"
+    | "代詞" | "量詞" | "方位詞" | "連詞" | "介詞" | "嘆詞" | "擬聲詞"
+    | "疑問詞" | "擬態詞" | "助動詞" | undefined;
+  def: string;
+  examples?: Array<{
+    han: string; // 台語（漢字）
+    tl: string; // 台語（羅馬字）
+    zh: string; // 華語
+  }>;
+  // 義項對詞目反義
+  hwAntonyms?: Array<{
+    id: number; // 對應詞目id
+    han: string; // 對應詞目漢字
+  }>;
+  // 義項對詞目近義
+  hwSynonyms?: Array<{
+    id: number; // 對應詞目id
+    han: string; // 對應詞目漢字
+  }>;
+  // 義項對義項反義
+  hhAntonyms?: Array<{
+    id: number; // 對應義項id
+    han: string; // 對應漢字
+  }>;
+  // 義項對義項近義
+  hhSynonyms?: Array<{
+    id: number; // 對應義項id
+    han: string; // 對應漢字
+  }>;
+}
+```
