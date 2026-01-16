@@ -27,6 +27,29 @@ const categories = Object.fromEntries(
     })
     .filter((elem) => elem !== undefined),
 );
+const huliokTagsDOM = new DOMParser().parseFromString(
+  await cached("kautian-huliokTags", () =>
+    fetch("https://sutian.moe.edu.tw/zh-hant/huliok/", {
+      headers: { "User-Agent": "Kemdict (Kisaragi Hiu)" },
+    }),
+  ),
+  "text/html",
+);
+// This is a Record<TagName, Id>.
+// While there are many of these tags that are namespaced by more than just the
+// button itself (like 百家姓-十一劃 vs 俗諺-十一劃), these don't seem to be
+// attached to words, so I'll kind of just not worry about them.
+const huliokTags = Object.fromEntries(
+  [...huliokTagsDOM.querySelectorAll("nav > ul > li > a")]
+    .map((elem) => {
+      const href = elem.getAttribute("href");
+      if (!href || href.startsWith("#")) return;
+      const match = href.match(/(\d+)\/$/);
+      if (!match) return;
+      return [elem.textContent.trim(), parseInt(match[1])] as [string, number];
+    })
+    .filter((elem) => elem !== undefined),
+);
 
 // This schema parses both files from moedict-data-twblg.
 // const heteronym = z.object({
@@ -169,6 +192,7 @@ export interface OutputWord {
   categories: Array<{
     id?: number;
     title: string;
+    huliok?: boolean;
   }>;
   wwAntonyms?: Array<OutputWordRef>;
   wwSynonyms?: Array<OutputWordRef>;
@@ -343,10 +367,29 @@ const words = collect(wordsStmt.iterate(), (it) => {
   return trim({
     id: word.詞目id,
     type: word.詞目類型,
-    categories: word.分類.map((category) => ({
-      id: categories[category],
-      title: category,
-    })),
+    categories: word.分類.map((category) => {
+      const categoryId = categories[category];
+      if (categoryId) {
+        return {
+          id: categoryId,
+          title: category,
+        };
+      }
+
+      // If it's not seen as a category, try the "附錄" tags.
+      const huliokId = huliokTags[category];
+      if (huliokId) {
+        return {
+          id: huliokId,
+          title: category,
+          huliok: true,
+        };
+      }
+
+      return {
+        title: category,
+      };
+    }),
     han: trim({
       main: word.漢字,
       alt: alternativeHan,
