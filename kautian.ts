@@ -66,7 +66,7 @@ const inputWordRef = z.object({
   對應詞目漢字: z.string(),
 });
 interface OutputWordRef {
-  id: number;
+  wordId: number;
   han: string;
 }
 const inputDialects = z.object({
@@ -87,9 +87,10 @@ const inputHetRef = z.object({
   對應義項id: z.number(),
   對應詞目漢字: z.string(),
 });
-// This looks the same as OutputWordRef but I don't really want the two to be conflated.
+// Using hetId instead of just id allows distinguishing between hetRef and
+// wordRef when they are merged into a list.
 interface OutputHetRef {
-  id: number;
+  hetId: number;
   han: string;
 }
 const inputWord = z.object({
@@ -257,11 +258,11 @@ const words = collect(wordsStmt.iterate(), (it) => {
   const wordId = word.詞目id;
   const wordSynonyms = collect(wordSynonymsStmt.iterate(wordId), (it) => {
     const synonym = inputWordRef.parse(it);
-    return { id: synonym.對應詞目id, han: synonym.對應詞目漢字 };
+    return { wordId: synonym.對應詞目id, han: synonym.對應詞目漢字 };
   });
   const wordAntonyms = collect(wordAntonymsStmt.iterate(wordId), (it) => {
     const antonym = inputWordRef.parse(it);
-    return { id: antonym.對應詞目id, han: antonym.對應詞目漢字 };
+    return { wordId: antonym.對應詞目id, han: antonym.對應詞目漢字 };
   });
   const dialects = collect(wordDialectsStmt.iterate(wordId), (it) => {
     return trim(inputDialects.parse(it));
@@ -286,28 +287,28 @@ const words = collect(wordsStmt.iterate(), (it) => {
     const hwAntonyms = collect(hwAntonymsStmt.iterate(hetId), (it) => {
       const antonym = inputWordRef.parse(it);
       return {
-        id: antonym.對應詞目id,
+        wordId: antonym.對應詞目id,
         han: antonym.對應詞目漢字,
       };
     });
     const hwSynonyms = collect(hwSynonymsStmt.iterate(hetId), (it) => {
       const synonym = inputWordRef.parse(it);
       return {
-        id: synonym.對應詞目id,
+        wordId: synonym.對應詞目id,
         han: synonym.對應詞目漢字,
       };
     });
     const hhAntonyms = collect(hhAntonymsStmt.iterate(hetId), (it) => {
       const antonym = inputHetRef.parse(it);
       return {
-        id: antonym.對應義項id,
+        hetId: antonym.對應義項id,
         han: antonym.對應詞目漢字,
       };
     });
     const hhSynonyms = collect(hhSynonymsStmt.iterate(hetId), (it) => {
       const synonym = inputHetRef.parse(it);
       return {
-        id: synonym.對應義項id,
+        hetId: synonym.對應義項id,
         han: synonym.對應詞目漢字,
       };
     });
