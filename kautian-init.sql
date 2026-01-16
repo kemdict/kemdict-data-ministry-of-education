@@ -172,5 +172,8 @@ create index idx_異用字 on 異用字(詞目id);
 
 create index idx_wwAntonyms on 詞目tuì詞目反義(詞目id);
 create index idx_wwSynonyms on 詞目tuì詞目近義(詞目id);
+-- These actually barely had an effect when I tried.
 -- create index idx_hwAntonyms on 義項tuì詞目反義(義項id);
 -- create index idx_hwSynonyms on 義項tuì詞目近義(義項id);
+-- create index idx_hhAntonyms on 義項tuì義項反義(義項id);
+-- create index idx_hhSynonyms on 義項tuì義項近義(義項id);

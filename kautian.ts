@@ -70,11 +70,15 @@ interface OutputWordRef {
   han: string;
 }
 /** Het-to-Het synonym or antonym */
-const inputHHSynoAnto = z.object({
+const inputHetRef = z.object({
   對應義項id: z.number(),
   對應詞目漢字: z.string(),
-  對應解說: z.string(),
 });
+// This looks the same as OutputWordRef but I don't really want the two to be conflated.
+interface OutputHetRef {
+  id: number;
+  han: string;
+}
 const inputWord = z.object({
   詞目id: z.number(),
   詞目類型: z.enum([
@@ -122,8 +126,8 @@ interface OutputHet {
   examples?: Array<OutputExample>;
   hwAntonyms?: Array<OutputWordRef>;
   hwSynonyms?: Array<OutputWordRef>;
-  hhAntonyms?: number[];
-  hhSynonyms?: number[];
+  hhAntonyms?: Array<OutputHetRef>;
+  hhSynonyms?: Array<OutputHetRef>;
 }
 export interface OutputWord {
   id: number;
@@ -187,12 +191,18 @@ const wordSynonymsStmt = db.prepare(`
 `);
 // this is fine-ish because we've have an index for 義項(詞目id)
 const hetsStmt = db.prepare("select * from 義項 where 詞目id = ?");
-const hwAntonymsStmt = db.prepare(`
-  select * from "義項tuì詞目反義" where 義項id = ?
-`);
-const hwSynonymsStmt = db.prepare(`
-  select * from "義項tuì詞目近義" where 義項id = ?
-`);
+const hwAntonymsStmt = db.prepare(
+  `select * from "義項tuì詞目反義" where 義項id = ?`,
+);
+const hwSynonymsStmt = db.prepare(
+  `select * from "義項tuì詞目近義" where 義項id = ?`,
+);
+const hhAntonymsStmt = db.prepare(
+  `select * from "義項tuì義項反義" where 義項id = ?`,
+);
+const hhSynonymsStmt = db.prepare(
+  `select * from "義項tuì義項近義" where 義項id = ?`,
+);
 const colloquialStmt = db.prepare("select 羅馬字 from 俗唸作 where 詞目id = ?");
 const alternativeStmt = db.prepare(
   "select 羅馬字 from 又唸作 where 詞目id = ?",
@@ -245,13 +255,29 @@ const words = collect(wordsStmt.iterate(), (it) => {
         han: synonym.對應詞目漢字,
       };
     });
+    const hhAntonyms = collect(hhAntonymsStmt.iterate(hetId), (it) => {
+      const antonym = inputHetRef.parse(it);
+      return {
+        id: antonym.對應義項id,
+        han: antonym.對應詞目漢字,
+      };
+    });
+    const hhSynonyms = collect(hhSynonymsStmt.iterate(hetId), (it) => {
+      const synonym = inputHetRef.parse(it);
+      return {
+        id: synonym.對應義項id,
+        han: synonym.對應詞目漢字,
+      };
+    });
     return trim({
       id: het.義項id,
       def: het.解說,
       pos: het.詞性,
       examples: examples,
-      hwAntonyms: hwAntonyms,
-      hwSynonyms: hwSynonyms,
+      hwAntonyms,
+      hwSynonyms,
+      hhAntonyms,
+      hhSynonyms,
     } satisfies OutputHet);
   });
   const colloquial = collect(
