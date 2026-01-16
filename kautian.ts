@@ -56,19 +56,16 @@ const categories = Object.fromEntries(
 
 const db = new DatabaseSync("kautian.db", { readOnly: true });
 
-/** Word-to-Word synonym or antonym */
-const kautianWWSynoAnto = z.object({
-  對應詞目id: z.number(),
-  對應詞目漢字: z.string(),
-});
-/** Het-to-Word synonym or antonym */
-const kautianHWSynoAnto = z.object({
+/**
+ * Reference to a word.
+ * Used in Word-to-Word or Het-to-Word synonyms or antonyms.
+ */
+const kautianWordRef = z.object({
   對應詞目id: z.number(),
   對應詞目漢字: z.string(),
 });
 /** Het-to-Het synonym or antonym */
 const kautianHHSynoAnto = z.object({
-  解說: z.string(),
   對應義項id: z.number(),
   對應詞目漢字: z.string(),
   對應解說: z.string(),
@@ -117,12 +114,10 @@ interface OutputHet {
     tl: string;
     zh: string;
   }>;
-  hwAntonyms?: Array<
-    {
-      desc: string,
-      id
-    }
-  >;
+  hwAntonyms?: Array<{
+    desc: string;
+    id;
+  }>;
   hwSynonyms?: number[];
   hhAntonyms?: number[];
   hhSynonyms?: number[];
@@ -221,11 +216,11 @@ const words = collect(wordsStmt.iterate(), (word) => {
   const inputWord = kautianWord.parse(word);
   const wordId = inputWord.詞目id;
   const wordSynonyms = collect(wordSynonymsStmt.iterate(wordId), (it) => {
-    const synonym = kautianWWSynoAnto.parse(it);
+    const synonym = kautianWordRef.parse(it);
     return { id: synonym.對應詞目id, han: synonym.對應詞目漢字 };
   });
   const wordAntonyms = collect(wordAntonymsStmt.iterate(wordId), (it) => {
-    const antonym = kautianWWSynoAnto.parse(it);
+    const antonym = kautianWordRef.parse(it);
     return { id: antonym.對應詞目id, han: antonym.對應詞目漢字 };
   });
   const hets = collect(hetsStmt.iterate(wordId), (het) => {
@@ -240,7 +235,7 @@ const words = collect(wordsStmt.iterate(), (word) => {
       };
     });
     const hwAntonyms = collect(hwAntonymsStmt.iterate(hetId), (it) => {
-      const antonym = kautianHWSynoAnto.parse(it);
+      const antonym = kautianWordRef.parse(it);
       return {};
     });
     return trim({
