@@ -158,7 +158,7 @@ function collect<T, Ret>(iter: IterableIterator<T>, body: (input: T) => Ret) {
 }
 
 const wordsStmt = db.prepare("select * from 詞目");
-const wordAntoymsStmt = db.prepare(`
+const wordAntonymsStmt = db.prepare(`
   select * from "詞目tuì詞目反義" where 詞目id = ?
 `);
 const wordSynonymsStmt = db.prepare(`
@@ -247,7 +247,7 @@ const words = collect(wordsStmt.iterate(), (word) => {
       alt: alternative,
       otherMerged: otherMerged,
     },
-    wwAntonyms: wordAntoyms,
+    wwAntonyms: wordAntonyms,
     wwSynonyms: wordSynonyms,
     heteronyms: hets,
   } satisfies OutputWord;
