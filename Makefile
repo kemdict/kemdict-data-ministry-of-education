@@ -39,6 +39,15 @@ kautian.db: 原始資料/kautian-20251219.ods
 kautian.json: kautian.db
 	deno -A kautian.ts kautian.json
 
+# For some reason if I don't put the '|foo' in the ignoreColumns regexp it'll
+# just not ignore those columns. I don't know what's happening.
+stti-hakka.json: $(wildcard 原始資料/stti-hakka-*.ods)
+	$(call convertOne,$<)
+	npx csvtojson $(basename $<).csv --noheader=false --ignoreColumns='/階段|foo/' --headers='["id","zh","def","第1階段","第2階段","第3階段","第4階段","第5階段","四縣詞彙","四縣音讀","南四縣詞彙","南四縣音讀","海陸詞彙","海陸音讀","大埔詞彙","大埔音讀","饒平詞彙","饒平音讀","饒平腔備註詞彙_卓蘭","饒平腔備註音讀_卓蘭","詔安詞彙","詔安音讀"]' > "$@"
+stti-ttg.json: $(wildcard 原始資料/stti-ttg-*.ods)
+	$(call convertOne,$<)
+	npx csvtojson $(basename $<).csv --noheader=false --ignoreColumns='/階段|foo/' --headers='["id","zh","def","第1階段","第2階段","第3階段","第4階段","第5階段","han","tl"]' > "$@"
+
 # FIXME: we need to merge them into one file. Somehow.
 hakkadict.json: $(wildcard 原始資料/hakkadict_四縣腔*.ods)
 	$(call convertOne,$<)

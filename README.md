@@ -1,4 +1,8 @@
-教育部辭典（重編國語辭典修訂本、國語辭典簡編本、成語典、國語小字典、臺灣客家語常用詞辭典）處理成 JSON 格式的結果。
+# kemdict-data-ministry-of-education
+
+教育部一些辭典處理成 JSON 格式的結果。
+
+（華語：重編國語辭典修訂本、國語辭典簡編本、成語典、國語小字典；客語：臺灣客家語常用詞辭典（尚需更新）、學科術語對譯查詢（客語）；台語：臺灣台語常用詞辭典、學科術語對譯查詢（台語））
 
 各個詞的 key 有改（一方面單字統一用 `title`，另一方面省空間），除此之外內容沒有再動。
 
@@ -10,8 +14,10 @@
 - `dict_mini`: 國語小字典
 - `hakkadict`: 臺灣客家語常用詞辭典
 - `kautian`: 臺灣台語常用詞辭典
+- `stti-ttg`: 學科術語對譯查詢（台語）
+- `stti-hakka`: 學科術語對譯查詢（客語）
 
-原始資料在`./原始資料`這個資料夾下，五個 JSON 檔案是以下流程生成的檔案。
+原始資料在`./原始資料`這個資料夾下，這些 JSON 檔案是以下流程生成的檔案。
 
 ## Updating
 
@@ -31,6 +37,8 @@
 
     - 
   - 《教育部臺灣台語常用詞辭典》[資料釋出](https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2)
+  - STTI (台語): https://stti.moe.edu.tw/file-download/newsData/?lang=sutgi
+  - STTI (客語): https://stti.moe.edu.tw/sudngi/file-download/societyData/?lang=sudngi
 - 安裝 Node、npm、LibreOffice
 - `npm install` (for `csvtojson`)
 - 到 `./原始資料`，檢查後把舊的檔案刪掉
@@ -56,6 +64,7 @@
 - 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》網址：http://dict.mini.moe.edu.tw
 - 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣客語辭典》（取用於 2024 年 5 月 15 日）網址：https://hakkadict.moe.edu.tw
 - 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣台語常用詞辭典》（取用於 2025 年 12 月 19 日）網址：https://sutian.moe.edu.tw
+- 中華民國教育部（Ministry of Education, R.O.C.）。《學科術語臺灣台語/臺灣客語對譯查詢》（版本：20241219）網址：https://stti.moe.edu.tw
 
 ```
 《重編國語辭典修訂本》
@@ -208,6 +217,50 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 | 相似詞       | synonyms        |                |
 | 相反詞       | antonyms        |                |
 | 對應音檔名稱 | audio_file_name |                |
+
+### `stti-ttg.json`
+
+| Original     | Here | Notes                         |
+|--------------+------+-------------------------------|
+| 序號         | id   |                               |
+| 學科術語     | zh   |                               |
+| 參考解釋     | def  |                               |
+| 第1階段      |      | I'll be dropping these, sorry |
+| 第2階段      |      |                               |
+| 第3階段      |      |                               |
+| 第4階段      |      |                               |
+| 第5階段      |      |                               |
+| 臺灣台語詞彙 | han  |                               |
+| 臺羅         | tl   |                               |
+
+Note that .han and .tl are newline-delimited lists that encode a mapping.
+
+### `stti-hakka.json`
+
+| Original             | Here                 | Notes |
+|----------------------+----------------------+-------|
+| 序號                 | id                   |       |
+| 學科術語             | zh                   |       |
+| 參考解釋             | def                  |       |
+| 第1階段              |                      |       |
+| 第2階段              |                      |       |
+| 第3階段              |                      |       |
+| 第4階段              |                      |       |
+| 第5階段              |                      |       |
+| 四縣詞彙             | 四縣詞彙             | The newlines are removed.  |
+| 四縣音讀             | 四縣音讀             |       |
+| 南四縣詞彙           | 南四縣詞彙           |       |
+| 南四縣音讀           | 南四縣音讀           |       |
+| 海陸詞彙             | 海陸詞彙             |       |
+| 海陸音讀             | 海陸音讀             |       |
+| 大埔詞彙             | 大埔詞彙             |       |
+| 大埔音讀             | 大埔音讀             |       |
+| 饒平詞彙             | 饒平詞彙             |       |
+| 饒平音讀             | 饒平音讀             |       |
+| 饒平腔備註詞彙(卓蘭) | 饒平腔備註詞彙(卓蘭) |       |
+| 饒平腔備註音讀(卓蘭) | 饒平腔備註音讀(卓蘭) |       |
+| 詔安詞彙             | 詔安詞彙             |       |
+| 詔安音讀             | 詔安音讀             |       |
 
 ## Kautian
 
