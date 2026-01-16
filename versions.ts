@@ -15,4 +15,6 @@ export const dicts = {
   dict_idioms:   { current: "2020_20251224", previous: "2020_20250324" },
   dict_mini:     { current: "2019_20251229", previous: "2019_20250328" },
   dict_revised:  { current: "2015_20251229", previous: "2015_20250327" },
+  "stti-taigi":  { current: "20241219", previous: "" },
+  "stti-hakka":  { current: "20241219", previous: "" },
 } satisfies Record<string, { current: string, previous: string }>;
