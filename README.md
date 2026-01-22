@@ -205,18 +205,30 @@ JSON 的 key / Excel 的標頭有修改，這樣我在 [kemdict](https://github.
 
 ### `hakkadict.json`
 
-| Original     | Here            | Notes          |
-|--------------|-----------------|----------------|
-| 序號         | id              |                |
-| 詞目         | title           |                |
-| 詞性         | pos             | part of speech |
-| 詞目索引     | index_path      |                |
-| 音讀         | pn   | pronunciation                |
-| 釋義         | def      | definition                |
-| 例句         | example         |                |
-| 相似詞       | synonyms        |                |
-| 相反詞       | antonyms        |                |
-| 對應音檔名稱 | audio_file_name |                |
+| Original           | Here         | Notes                          |
+|--------------------|--------------|--------------------------------|
+| 系統編號           | id           |                                |
+| 詞目               | title        |                                |
+| 詞性               | type         |                                |
+| 詞目索引分類       | category     |                                |
+| 四縣腔音讀         | `p_四縣`     | p 指 pronunciation             |
+| 海陸腔音讀         | `p_海陸`     |                                |
+| 大埔腔音讀         | `p_大埔`     |                                |
+| 饒平腔音讀         | `p_饒平`     |                                |
+| 詔安腔音讀         | `p_詔安`     |                                |
+| 南四縣腔音讀       | `p_南四縣`   |                                |
+| 釋義               | definition   |                                |
+| 近義詞             | synonyms     |                                |
+| 反義詞             | antonyms     |                                |
+| 對應國語           | `corr_zh`      | corr 指 correspond                               |
+| 大埔腔相關字詞     | `r_大埔`     | r 指 related                   |
+| 大埔腔相關字詞音讀 | `r_p_大埔`   | `r_p` 指 related pronunciation |
+| 饒平腔相關字詞     | `r_饒平`     |                                |
+| 饒平腔相關字詞音讀 | `r_p_饒平`   |                                |
+| 詔安腔相關字詞     | `r_詔安`     |                                |
+| 詔安腔相關字詞音讀 | `r_p_詔安`   |                                |
+| 南四縣相關字詞     | `r_南四縣`   |                                |
+| 南四縣相關字詞音讀 | `r_p_南四縣` |                                |
 
 ### `stti-taigi.json`
 
