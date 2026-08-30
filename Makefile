@@ -1,10 +1,28 @@
-# Deno + sheetjs
-ifneq (,$(shell command -v deno))
+# The "--infilter=CSV:44,34,76,1" is necessary to get LibreOffice to
+# read the input as UTF-8. ...Bloody hell.
+# https://unix.stackexchange.com/a/259434
+#
+# The numbers are options to the CSV filter.
+# The four options are:
+# Field separator, String delimiter, Character set, First line number
+#   Field Separator is an ASCII character. 44 = ","
+#   String delimiter is an ASCII character. 34 = ?\"
+#   Character set is basically an ID in a particular table
+#     (included in the documentation), and UTF-8 is assigned 76 there.
+#
+# It's documented here:
+# https://wiki.openoffice.org/wiki/Documentation/DevGuide/Spreadsheets/Filter_Options
+#
+# The 12th option being -1 means export all sheets.
+# It's only documented in the changelog.
+# https://wiki.documentfoundation.org/ReleaseNotes/7.2#Document_Conversion
+
+ifneq (,$(shell command -v libreoffice))
 # We add the semicolon so it's possible / simpler to use foreach
-convertOne = deno run -A xlsx-to-csv.ts "$(1)";
-convertAll = deno run -A xlsx-to-csv.ts --all "$(1)";
+convertOne = libreoffice "--infilter=CSV:44,34,76,1" --convert-to csv --outdir "原始資料" "$(1)";
+convertAll = libreoffice "--infilter=CSV:44,34,76,1,,,,,,,,-1" --convert-to csv --outdir "原始資料" "$(1)";
 else
-$(error "deno not found")
+$(error "libreoffice not found")
 endif
 
 # hakkadict.json: $(wildcard 原始資料/hakkadict*.ods)

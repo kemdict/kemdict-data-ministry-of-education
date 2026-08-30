@@ -2,12 +2,14 @@
 #+created: 2026-08-30T20:39:50+0900
 
 * Prerequisites
-- 安裝 Node、Deno
-- =deno install=
+/2026-08-30T20:46:32+0900: Actually we are using a mix of Node, Deno, and Bun. I'm thinking we should probably move towards using Deno for everything (because I don't want to use npm & I want to be able to do this on Android (which basically rules out Bun)./
+
+- 安裝 Node、npm、LibreOffice
+- =npm install= (for =csvtojson=)
 * zh_TW dicts (dict_concised, dict_revised, dict_idioms, dict_mini)
 - 更新 versions.ts，填入新的版本號碼（舊的版本號碼移到 previous）
 - 下載：
-  - 自動化下載： =deno download.ts= (reads from version.ts)
+  - 自動化下載： =npx tsx download.ts= (reads from version.ts)
   - 或是手動下載：
   - 從[[https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html][教育部國語辭典公眾授權網]]閱讀使用說明及授權後下載原始檔案（ =.xlsx= 或 =.xls= ），放在 =原始資料/= 這個資料夾裡。
 - =make all=
