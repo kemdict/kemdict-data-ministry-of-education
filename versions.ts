@@ -17,4 +17,5 @@ export const dicts = {
   dict_revised:  { current: "2015_20251229", previous: "2015_20250327" },
   "stti-taigi":  { current: "20241219", previous: "" },
   "stti-hakka":  { current: "20241219", previous: "" },
+  kautian: { current: "20260422", previous: "20251219" }
 } satisfies Record<string, { current: string, previous: string }>;

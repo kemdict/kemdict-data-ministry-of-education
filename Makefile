@@ -30,9 +30,9 @@ endif
 # 	npx csvtojson $(patsubst %.ods,%.csv,$<) --noheader=false --headers='["id","title","pos","index_path","pn","def","example","synonyms","antonyms","audio_file_name"]' > "$@"
 
 # A simple ODS -> SQLite DB conversion
-kautian.db: 原始資料/kautian-20251219.ods
+kautian.db: 原始資料/kautian-20260422.ods
 	$(call convertAll,$<)
-	rename kautian-20251219 kautian 原始資料/kautian*.csv
+	rename kautian-20260422 kautian 原始資料/kautian*.csv
 	[[ -f kautian.db ]] && rm kautian.db || true
 	sqlite3 kautian.db < kautian-init.sql
 

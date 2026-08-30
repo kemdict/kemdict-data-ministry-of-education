@@ -30,7 +30,8 @@ done
 
 * kautian
 - 下載《教育部臺灣台語常用詞辭典》[[https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2][資料釋出]]
-- 檔案放到原始資料，然後改檔名加入下載日期
+- 檔案放到原始資料，然後改檔名加入最近公告更新的日期
+- 更新 versions.ts to reflect new version number (date)
 - 改 Makefile 中 kautian.db 所需要的檔案, make it point to the new file
 - =make kautian.json=
 - commit and push
