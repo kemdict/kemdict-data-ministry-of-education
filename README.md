@@ -32,7 +32,7 @@
 - 中華民國教育部（Ministry of Education, R.O.C.）。《成語典》網址：http://dict.idioms.moe.edu.tw/
 - 中華民國教育部（Ministry of Education, R.O.C.）。《國語小字典》網址：http://dict.mini.moe.edu.tw
 - 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣客語辭典》（取用於 2024 年 5 月 15 日）網址：https://hakkadict.moe.edu.tw
-- 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣台語常用詞辭典》（取用於 2025 年 12 月 19 日）網址：https://sutian.moe.edu.tw
+- 中華民國教育部（Ministry of Education, R.O.C.）。《臺灣台語常用詞辭典》（取用於 2026 年 8 月 31 日）網址：https://sutian.moe.edu.tw
 - 中華民國教育部（Ministry of Education, R.O.C.）。《學科術語臺灣台語/臺灣客語對譯查詢》（版本：20241219）網址：https://stti.moe.edu.tw
 
 ```
