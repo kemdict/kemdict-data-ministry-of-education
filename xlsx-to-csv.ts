@@ -42,7 +42,7 @@ function noExt(filename: string) {
   const match = base.match(/\.[^.]*$/);
   if (match && match.index !== 0) {
     const directory = path.dirname(filename);
-    const outfilename = filename.substring(0, match.index);
+    const outfilename = base.substring(0, match.index);
     if (directory === ".") {
       return outfilename;
     } else {
