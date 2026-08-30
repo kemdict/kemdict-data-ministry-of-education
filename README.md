@@ -19,37 +19,6 @@
 
 原始資料在`./原始資料`這個資料夾下，這些 JSON 檔案是以下流程生成的檔案。
 
-## Updating
-
-- 更新 versions.ts，填入新的版本號碼（舊的版本號碼移到 previous）
-- 自動化下載：`npx tsx download.ts`
-- 或是手動下載：
-  - 從[教育部國語辭典公眾授權網](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html)閱讀使用說明及授權後下載原始檔案（`.xlsx` 或 `.xls`），放在`原始資料/`這個資料夾裡。
-  - 《臺灣客語辭典》要到[資料釋出](https://hakkadict.moe.edu.tw/resource_download/)下載，類似這樣
-
-    ```sh
-    date=20240515
-    for variant in 四縣腔 海陸腔 大埔腔 饒平腔 詔安腔 南四縣腔; do
-        curl https://hakkadict.moe.edu.tw/static/resource/客語資源下載/本辭典的文字/"$variant"詞條詞目文字.ods \
-            > hakkadict_"$variant"_"$date".ods
-    done
-    ```
-
-    - 
-  - 《教育部臺灣台語常用詞辭典》[資料釋出](https://sutian.moe.edu.tw/zh-hant/siongkuantsuguan/#hid2)
-  - STTI (台語): https://stti.moe.edu.tw/file-download/newsData/?lang=sutgi
-  - STTI (客語): https://stti.moe.edu.tw/sudngi/file-download/societyData/?lang=sudngi
-- 安裝 Node、npm、LibreOffice
-- `npm install` (for `csvtojson`)
-- 到 `./原始資料`，檢查後把舊的檔案刪掉
-- 然後 `make all`
-
-如果格式沒有變的話就會產生各個辭典對應的 JSON 檔案。
-
-- `make diff` (make sure the working copy has the new files and HEAD has the old files)
-
-這樣會產生前後的差異比對結果。Now make a commit and push.
-
 ## License
 
 辭典本文的著作權為中華民國教育部所有。完整授權說明的複本置於 [license](./license) 資料夾下。
